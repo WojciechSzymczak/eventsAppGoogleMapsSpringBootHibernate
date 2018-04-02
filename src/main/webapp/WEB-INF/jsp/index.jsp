@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
 
-    <title>Jumbotron Template for Bootstrap</title>
+    <title>Events - main page</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -39,7 +39,7 @@
                         <li>Date</li>
                         <li>Location</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Know more</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
                 </div>
             </div>
 
@@ -54,7 +54,7 @@
                         <li>Date</li>
                         <li>Location</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Know more</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
                 </div>
             </div>
 
@@ -69,7 +69,7 @@
                         <li>Date</li>
                         <li>Location</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Know more</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
                 </div>
             </div>
 
@@ -84,7 +84,7 @@
                         <li>Date</li>
                         <li>Location</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Know more</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
                 </div>
             </div>
 
@@ -99,7 +99,7 @@
                         <li>Date</li>
                         <li>Location</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Know more</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
                 </div>
             </div>
 
@@ -114,7 +114,7 @@
                         <li>Date</li>
                         <li>Location</li>
                     </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-outline-primary">Know more</button>
+                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
                 </div>
             </div>
 
