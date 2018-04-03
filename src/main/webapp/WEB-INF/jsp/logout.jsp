@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
 
-    <title>Events - main page</title>
+    <title>Events - logout</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -18,14 +18,19 @@
 
 <body>
 
-    <%@include file="../../jspf/userPanel.jspf"%>
+    <%@include file="../jspf/userPanel.jspf"%>
 
-    Hello from user folder!<br>
-    <a href="logout">Logout</a>
+    Logging out. Please wait...
+
+    <%
+        request.getSession(false).invalidate();
+        String redirectURL = "/index";
+        response.sendRedirect(redirectURL);
+    %>
 
     <div class="container">
 
-        <%@include file="../../jspf/footer.jspf"%>
+        <%@include file="../jspf/footer.jspf"%>
 
     </div>
 

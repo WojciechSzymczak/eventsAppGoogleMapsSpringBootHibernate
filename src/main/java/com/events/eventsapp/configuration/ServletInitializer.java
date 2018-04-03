@@ -1,5 +1,6 @@
-package com.events.eventsapp;
+package com.events.eventsapp.configuration;
 
+import com.events.eventsapp.EventsappApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

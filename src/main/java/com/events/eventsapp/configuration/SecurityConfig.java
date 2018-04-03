@@ -1,4 +1,4 @@
-package com.events.eventsapp;
+package com.events.eventsapp.configuration;
 
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

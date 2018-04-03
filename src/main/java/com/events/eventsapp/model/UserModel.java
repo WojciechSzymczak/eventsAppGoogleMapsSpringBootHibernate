@@ -1,25 +1,49 @@
 package com.events.eventsapp.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Entity // This tells Hibernate to make a table out of this class
-public class UserModel {
+@Table(name = "users")
+public class UserModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="user_id", nullable=false, unique = true)
+    private Long id;
 
+    @NotEmpty
+    @Column(name="user_name", nullable=false, unique = true)
     private String name;
+
+    @NotEmpty
+    @Column(name="user_email", nullable=false, unique = true)
     private String email;
 
-    public Integer getId() {
+    @NotEmpty
+    @Column(name="user_pass", nullable=false)
+    private String password;
+
+    @Column(name="user_join_date")
+    private String joindate;
+
+    @Column(name="user_birth_date")
+    private String birthdate;
+
+    @Column(name="user_first_name")
+    private String firstname;
+
+    @Column(name="user_last_name")
+    private String lastname;
+
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -38,5 +62,25 @@ public class UserModel {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
+
+    public String getJoindate() { return joindate; }
+
+    public void setJoindate(String joindate) { this.joindate = joindate; }
+
+    public String getBirthdate() { return birthdate; }
+
+    public void setBirthdate(String birthdate) { this.birthdate = birthdate; }
+
+    public String getFirstname() { return firstname; }
+
+    public void setFirstname(String firstname) { this.firstname = firstname; }
+
+    public String getLastname() { return lastname; }
+
+    public void setLastname(String lastname) { this.lastname = lastname; }
 
 }
