@@ -1,9 +1,14 @@
 package com.events.eventsapp.model;
 
 
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
 @Table(name = "users")
@@ -37,6 +42,13 @@ public class UserModel implements Serializable {
 
     @Column(name="user_last_name")
     private String lastname;
+
+    @Column(name = "active")
+    private int active;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<RoleModel> roles;
 
 
     public Long getId() {
@@ -82,5 +94,13 @@ public class UserModel implements Serializable {
     public String getLastname() { return lastname; }
 
     public void setLastname(String lastname) { this.lastname = lastname; }
+
+    public int getActive() { return active; }
+
+    public void setActive(int active) { this.active = active; }
+
+    public Set<RoleModel> getRoles() { return roles; }
+
+    public void setRoles(Set<RoleModel> roles) { this.roles = roles; }
 
 }

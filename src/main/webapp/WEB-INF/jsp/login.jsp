@@ -1,3 +1,4 @@
+<%@ page import="org.springframework.web.context.request.RequestScope" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!doctype html>
 <html lang="en">
@@ -25,31 +26,71 @@
     <div class="container">
 
 
-        <c:url value="/login" var="loginUrl"/>
-        <form action="${loginUrl}" method="post">
-            <c:if test="${param.error != null}">
-                <p>
-                    Invalid username and password.
-                </p>
-            </c:if>
-            <c:if test="${param.logout != null}">
-                <p>
-                    You have been logged out.
-                </p>
-            </c:if>
-            <p>
-                <label for="username">Username</label>
-                <input type="text" id="username" name="username"/>
-            </p>
-            <p>
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password"/>
-            </p>
-            <input type="hidden"
-                   name="${_csrf.parameterName}"
-                   value="${_csrf.token}"/>
-            <button type="submit" class="btn">Log in</button>
-        </form>
+        <%--<c:url value="/loginpost" var="loginUrl"/>--%>
+        <%--<form action="${loginUrl}" method="post">--%>
+            <%--<c:if test="${param.error != null}">--%>
+                <%--<p>--%>
+                    <%--Invalid username and password.--%>
+                    <%--${param.keySet()}--%>
+                <%--</p>--%>
+            <%--</c:if>--%>
+            <%--<c:if test="${param.logout != null}">--%>
+                <%--<p>--%>
+                    <%--You have been logged out.--%>
+                <%--</p>--%>
+            <%--</c:if>--%>
+            <%--<p>--%>
+                <%--<label for="email">email</label>--%>
+                <%--<input type="text" id="email" name="email"/>--%>
+            <%--</p>--%>
+            <%--<p>--%>
+                <%--<label for="password">Password</label>--%>
+                <%--<input type="password" id="password" name="password"/>--%>
+            <%--</p>--%>
+            <%--&lt;%&ndash;<input type="hidden"&ndash;%&gt;--%>
+                   <%--&lt;%&ndash;name="${_csrf.parameterName}"&ndash;%&gt;--%>
+                   <%--&lt;%&ndash;value="${_csrf.token}"/>&ndash;%&gt;--%>
+            <%--<button type="submit" class="btn">Log in</button>--%>
+        <%--</form>--%>
+
+
+            <h1>Spring Security Login Form (Database Authentication)</h1>
+
+            <div id="login-box">
+
+                <h2>Login with Username and Password</h2>
+
+                <c:if test="${not empty error}">
+                    <div class="error">${error}</div>
+                </c:if>
+                <c:if test="${not empty msg}">
+                    <div class="msg">${msg}</div>
+                </c:if>
+
+                <form name='loginForm'
+                      <%--action="<c:url value='/j_spring_security_check' />" method='POST'>--%>
+                      action="<c:url value='/loginProcess' />" method='POST'>
+                    <table>
+                        <tr>
+                            <td>User:</td>
+                            <td><input type='text' name='email'></td>
+                        </tr>
+                        <tr>
+                            <td>Password:</td>
+                            <td><input type='password' name='password' /></td>
+                        </tr>
+                        <tr>
+                            <td colspan='2'><input name="submit" type="submit"
+                                                   value="submit" /></td>
+                        </tr>
+                    </table>
+
+                    <input type="hidden" name="${_csrf.parameterName}"
+                           value="${_csrf.token}" />
+
+                </form>
+            </div>
+
 
 
         <%@include file="../jspf/footer.jspf"%>
@@ -59,10 +100,10 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <%--<script src="jquery/jquery-3.3.1.js"></script>--%>
-    <%--<script>window.jQuery || document.write('<script src="jquery/jquery-3.3.1.js"><\/script>')</script>--%>
-    <%--<script src="popper/popper.min.js"></script>--%>
-    <%--<script src="js/bootstrap.min.js"></script>--%>
+    <script src="jquery/jquery-3.3.1.js"></script>
+    <script>window.jQuery || document.write('<script src="jquery/jquery-3.3.1.js"><\/script>')</script>
+    <script src="popper/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 
 </body>
 </html>
