@@ -24,7 +24,7 @@
 
     <%
         request.getSession(false).invalidate();
-        String redirectURL = "/index";
+        String redirectURL = "/index?logout";
         response.sendRedirect(redirectURL);
     %>
 

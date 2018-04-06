@@ -1,5 +1,5 @@
-<%@ page import="org.springframework.web.context.request.RequestScope" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
 
-    <title>Events - main page</title>
+    <title>Events - Log in</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -25,51 +25,15 @@
 
     <div class="container">
 
-
-        <%--<c:url value="/loginpost" var="loginUrl"/>--%>
-        <%--<form action="${loginUrl}" method="post">--%>
-            <%--<c:if test="${param.error != null}">--%>
-                <%--<p>--%>
-                    <%--Invalid username and password.--%>
-                    <%--${param.keySet()}--%>
-                <%--</p>--%>
-            <%--</c:if>--%>
-            <%--<c:if test="${param.logout != null}">--%>
-                <%--<p>--%>
-                    <%--You have been logged out.--%>
-                <%--</p>--%>
-            <%--</c:if>--%>
-            <%--<p>--%>
-                <%--<label for="email">email</label>--%>
-                <%--<input type="text" id="email" name="email"/>--%>
-            <%--</p>--%>
-            <%--<p>--%>
-                <%--<label for="password">Password</label>--%>
-                <%--<input type="password" id="password" name="password"/>--%>
-            <%--</p>--%>
-            <%--&lt;%&ndash;<input type="hidden"&ndash;%&gt;--%>
-                   <%--&lt;%&ndash;name="${_csrf.parameterName}"&ndash;%&gt;--%>
-                   <%--&lt;%&ndash;value="${_csrf.token}"/>&ndash;%&gt;--%>
-            <%--<button type="submit" class="btn">Log in</button>--%>
-        <%--</form>--%>
-
-
-            <h1>Spring Security Login Form (Database Authentication)</h1>
+            <h2 class="mt-5 mb-3">Log in!</h2>
 
             <div id="login-box">
 
-                <h2>Login with Username and Password</h2>
-
-                <c:if test="${not empty error}">
-                    <div class="error">${error}</div>
-                </c:if>
-                <c:if test="${not empty msg}">
-                    <div class="msg">${msg}</div>
-                </c:if>
+                <div id="error"></div>
+                <div id="logout"></div>
 
                 <form name='loginForm'
-                      <%--action="<c:url value='/j_spring_security_check' />" method='POST'>--%>
-                      action="<c:url value='/loginProcess' />" method='POST'>
+                      action="<c:url value='/login' />" method='POST'>
                     <table>
                         <tr>
                             <td>User:</td>
@@ -92,7 +56,6 @@
             </div>
 
 
-
         <%@include file="../jspf/footer.jspf"%>
 
     </div>
@@ -104,6 +67,20 @@
     <script>window.jQuery || document.write('<script src="jquery/jquery-3.3.1.js"><\/script>')</script>
     <script src="popper/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            if(window.location.href.indexOf("error") > -1) {
+
+                document.getElementById("error").innerHTML =
+                    '<div class="btn-danger btn-lg mt-3 mb-3">' +
+                    'Login was not successful. Please provide correct user information' +
+                    '</div>';
+
+            }
+
+        });
+    </script>
 
 </body>
 </html>

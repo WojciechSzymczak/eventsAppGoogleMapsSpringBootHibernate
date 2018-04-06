@@ -7,7 +7,7 @@
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
 
-    <title>Events - main page</title>
+    <title>Events - user hello page</title>
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -21,7 +21,6 @@
     <%@include file="../../jspf/userPanel.jspf"%>
 
     Hello from user folder!<br>
-    <a href="logout">Logout</a>
 
     <div class="container">
 

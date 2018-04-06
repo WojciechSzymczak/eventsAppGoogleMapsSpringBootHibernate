@@ -20,12 +20,17 @@
 
     <%@include file="../jspf/userPanel.jspf"%>
 
+
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+
+        <div id="logout"></div>
+
         <h1 class="display-4">Find or create event!</h1>
         <p class="lead">Example events:</p>
     </div>
 
     <div class="container">
+
         <div class="card-deck mb-3 text-center">
 
             <div class="card mb-4 box-shadow">
@@ -134,6 +139,17 @@
     <script>window.jQuery || document.write('<script src="jquery/jquery-3.3.1.js"><\/script>')</script>
     <script src="popper/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if(window.location.href.indexOf("logout") > -1) {
 
+                document.getElementById("logout").innerHTML =
+                    '<div class="btn-success btn-lg mt-3 mb-3">' +
+                    'You have successfuly logged out!' +
+                    '</div>';
+
+            }
+        });
+    </script>
 </body>
 </html>
