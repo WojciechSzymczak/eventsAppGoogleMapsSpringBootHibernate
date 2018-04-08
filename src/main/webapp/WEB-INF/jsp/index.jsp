@@ -24,6 +24,9 @@
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
 
         <div id="logout"></div>
+        <c:if test='${requestScope.get("message") != null}'>
+            <div class="btn-success btn-lg mt-3 mb-3">${requestScope.get("message")}</div>
+        </c:if>
 
         <h1 class="display-4">Find or create event!</h1>
         <p class="lead">Example events:</p>
@@ -145,7 +148,7 @@
 
                 document.getElementById("logout").innerHTML =
                     '<div class="btn-success btn-lg mt-3 mb-3">' +
-                    'You have successfuly logged out!' +
+                    'You have successfully logged out!' +
                     '</div>';
 
             }

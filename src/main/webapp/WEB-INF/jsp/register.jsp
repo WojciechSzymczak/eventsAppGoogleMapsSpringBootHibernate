@@ -23,6 +23,10 @@
 
     <div class="container">
 
+        <c:if test='${requestScope.get("message") != null}'>
+            <div class="btn-danger btn-lg mt-3 mb-3">${requestScope.get("message")}</div>
+        </c:if>
+
         <form class="form-horizontal" role="form" method="POST" action="/register">
             <div class="row">
                 <div class="col-md-3"></div>
@@ -33,13 +37,13 @@
             </div>
             <div class="row">
                 <div class="col-md-3 field-label-responsive">
-                    <label for="name">Name</label>
+                    <label for="username">Name</label>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
-                            <input type="text" name="name" class="form-control" id="name"
+                            <input type="text" name="username" class="form-control" id="username"
                                    placeholder="John Doe" required autofocus>
                         </div>
                     </div>
@@ -96,7 +100,7 @@
             </div>
             <div class="row">
                 <div class="col-md-3 field-label-responsive">
-                    <label for="password">Confirm Password</label>
+                    <label for="passwordRepeated">Confirm Password</label>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -104,8 +108,8 @@
                             <div class="input-group-addon" style="width: 2.6rem">
                                 <i class="fa fa-repeat"></i>
                             </div>
-                            <input type="password" name="password-confirmation" class="form-control"
-                                   id="password-confirm" placeholder="Password" required>
+                            <input type="password" name="passwordRepeated" class="form-control"
+                                   id="passwordRepeated" placeholder="Password" required>
                         </div>
                     </div>
                 </div>
@@ -113,6 +117,8 @@
             <div class="row">
                 <div class="col-md-3"></div>
                 <div class="col-md-6">
+                    <input type="hidden" name="${_csrf.parameterName}"
+                           value="${_csrf.token}" />
                     <button type="submit" class="btn btn-success"><i class="fa fa-user-plus"></i> Register</button>
                 </div>
             </div>

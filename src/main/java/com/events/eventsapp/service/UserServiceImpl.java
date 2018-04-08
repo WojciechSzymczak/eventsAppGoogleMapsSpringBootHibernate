@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -31,6 +30,13 @@ public class UserServiceImpl implements UserService{
     public UserModel findUserByEmail(String email) {
 
         return userRepository.findByEmail(email);
+
+    }
+
+    @Override
+    public UserModel findUserByName(String username) {
+
+        return userRepository.findByName(username);
 
     }
 
@@ -71,7 +77,7 @@ public class UserServiceImpl implements UserService{
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
-        RoleModel userRole = roleRepository.findByRole("ADMIN");
+        RoleModel userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<RoleModel>(Arrays.asList(userRole)));
         userRepository.save(user);
 

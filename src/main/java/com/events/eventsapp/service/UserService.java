@@ -8,6 +8,8 @@ public interface UserService {
 
     public UserModel findUserByEmail(String email);
 
+    public UserModel findUserByName(String username);
+
     public Optional<UserModel> findUserById(Long Id);
 
     public UserModel validateUser(String email, String password);
