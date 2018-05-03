@@ -1,5 +1,6 @@
 target/
 !.mvn/wrapper/maven-wrapper.jar
+src/main/webapp/WEB-INF/publickeys/googleMapsApiKey
 
 ### STS ###
 .apt_generated

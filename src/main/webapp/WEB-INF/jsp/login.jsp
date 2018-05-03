@@ -21,6 +21,7 @@
 <body>
 
     <%@include file="../jspf/userPanel.jspf"%>
+    <%@include file="../jspf/navigationBar.jspf"%>
 
 
     <div class="container">
@@ -36,7 +37,7 @@
                       action="<c:url value='/login' />" method='POST'>
                     <table>
                         <tr>
-                            <td>User:</td>
+                            <td>E-mail:</td>
                             <td><input type='text' name='email'></td>
                         </tr>
                         <tr>

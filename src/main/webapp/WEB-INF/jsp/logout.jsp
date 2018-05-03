@@ -19,6 +19,7 @@
 <body>
 
     <%@include file="../jspf/userPanel.jspf"%>
+    <%@include file="../jspf/navigationBar.jspf"%>
 
     Logging out. Please wait...
 
