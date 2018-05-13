@@ -14,5 +14,8 @@ public interface UserService {
 
     public UserModel validateUser(String email, String password);
 
-    public void saveUser(UserModel user);
+    public void saveJustRegisteredUser(UserModel user);
+
+    public void updateUser(UserModel user);
+
 }

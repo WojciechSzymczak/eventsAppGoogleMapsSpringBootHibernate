@@ -77,16 +77,17 @@ public class EventAddController {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
             UserModel userModel = userService.findUserByEmail(currentPrincipalName);
-            Set <UserModel> userSet = new LinkedHashSet <UserModel>();
-            userSet.add(userModel);
 
-            eventModel.setUsers(userSet);
+            Set <EventModel> eventSet = new LinkedHashSet <EventModel>();
+            eventSet.add(eventModel);
+
+            userModel.setEvents(eventSet);
 
             if (eventService.findEventByName(name) != null) {
                 throw new Exception("Event with name: " + name + " already exists!");
             }
 
-            eventService.saveEvent(eventModel);
+            userService.updateUser(userModel);
 
             modelAndView.addObject("eventAddSucces", "Event succesfully added!");
 

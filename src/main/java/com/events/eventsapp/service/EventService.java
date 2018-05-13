@@ -11,4 +11,6 @@ public interface EventService {
     public Optional<EventModel> findEventById(Long Id);
 
     public void saveEvent(EventModel user);
+
+    void deleteEventById(Long eventId);
 }

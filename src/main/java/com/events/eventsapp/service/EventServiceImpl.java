@@ -6,6 +6,7 @@ import com.events.eventsapp.repositories.EventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -34,6 +35,15 @@ public class EventServiceImpl implements EventService{
     public void saveEvent(EventModel event) {
 
         eventRepository.save(event);
+
+    }
+
+    //TODO add checking if user deletes it's own event not other users.
+    @Override
+    @Transactional
+    public void deleteEventById(Long eventId) {
+
+            eventRepository.deleteEventModelById(eventId);
 
     }
 

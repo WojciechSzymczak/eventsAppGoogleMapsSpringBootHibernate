@@ -55,7 +55,7 @@ public class RegisterController {
             userModel.setName(username);
             userModel.setPassword(password);
 
-            userService.saveUser(userModel);
+            userService.saveJustRegisteredUser(userModel);
 
             mav = new ModelAndView("index");
             mav.addObject("message",

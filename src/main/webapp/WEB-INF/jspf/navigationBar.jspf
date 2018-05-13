@@ -21,7 +21,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/addEvent">Add event</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Manage events</a>
+                        <a class="dropdown-item" href="/eventManager">Manage events</a>
                     </div>
                 </li>
             </sec:authorize>

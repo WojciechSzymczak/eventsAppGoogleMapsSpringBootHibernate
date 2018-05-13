@@ -13,6 +13,7 @@ import com.events.eventsapp.model.RoleModel;
 import com.events.eventsapp.model.UserModel;
 import com.events.eventsapp.repositories.RoleRepository;
 import com.events.eventsapp.repositories.UserRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service("userService")
 public class UserServiceImpl implements UserService{
@@ -72,13 +73,26 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    /**
+     * This method should be used ONLY when registering user. Otherwise it is going to overwrite the password
+     * causing authentication problems.
+     * @param user UserModel object to be saved in database. Must have name, email and password set.
+     */
     @Override
-    public void saveUser(UserModel user) {
+    public void saveJustRegisteredUser(UserModel user) {
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
         RoleModel userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<RoleModel>(Arrays.asList(userRole)));
+        userRepository.save(user);
+
+    }
+
+    @Transactional
+    @Override
+    public void updateUser(UserModel user) {
+
         userRepository.save(user);
 
     }

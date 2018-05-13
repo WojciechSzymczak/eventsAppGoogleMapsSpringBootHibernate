@@ -1,13 +1,9 @@
 package com.events.eventsapp.model;
 
-
-import org.springframework.security.core.GrantedAuthority;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity // This tells Hibernate to make a table out of this class
@@ -50,6 +46,9 @@ public class UserModel implements Serializable {
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleModel> roles;
 
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "event_id"))
+    private Set<EventModel> events;
 
     public Long getId() {
         return id;
@@ -102,5 +101,27 @@ public class UserModel implements Serializable {
     public Set<RoleModel> getRoles() { return roles; }
 
     public void setRoles(Set<RoleModel> roles) { this.roles = roles; }
+
+    public Set<EventModel> getEvents() { return events; }
+
+    public void setEvents(Set<EventModel> events) { this.events = events; }
+
+    public void deleteEventById(Long eventId) {
+
+            Set <EventModel> eventModelSet = this.getEvents();
+            Iterator<EventModel> iterator = eventModelSet.iterator();
+
+            while(iterator.hasNext()) {
+
+                EventModel eventModel = iterator.next();
+
+                if (eventModel.getId() == eventId) {
+                    eventModelSet.remove(eventModel);
+                    break;
+                }
+
+            }
+
+    }
 
 }

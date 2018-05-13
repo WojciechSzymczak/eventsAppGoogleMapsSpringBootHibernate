@@ -31,8 +31,7 @@ public class EventModel implements Serializable {
     @Column(name = "event_latitude")
     private Double latitude;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    @ManyToMany(mappedBy = "events")
     private Set<UserModel> users;
 
     public Long getId() {
