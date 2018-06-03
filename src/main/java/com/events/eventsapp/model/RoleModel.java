@@ -1,15 +1,12 @@
 package com.events.eventsapp.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "role")
-public class RoleModel {
+public class RoleModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,6 +16,9 @@ public class RoleModel {
     @Column(name="role")
     private String role;
 
+    @ManyToMany(mappedBy = "roles")
+    private Set <UserModel> users;
+
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id; }
@@ -27,5 +27,12 @@ public class RoleModel {
 
     public void setRole(String role) { this.role = role; }
 
+    public Set<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<UserModel> users) {
+        this.users = users;
+    }
 
 }

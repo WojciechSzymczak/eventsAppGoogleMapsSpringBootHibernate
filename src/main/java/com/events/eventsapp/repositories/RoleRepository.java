@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 import com.events.eventsapp.model.RoleModel;
 
 
-//@Repository("roleRepository")
-@Repository
+@Repository("roleRepository")
+//@Repository
 public interface RoleRepository extends JpaRepository<RoleModel, Integer>{
+
     RoleModel findByRole(String role);
 
 }
