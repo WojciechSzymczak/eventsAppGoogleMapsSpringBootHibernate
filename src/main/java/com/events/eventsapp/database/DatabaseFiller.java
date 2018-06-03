@@ -139,7 +139,7 @@ public class DatabaseFiller implements ApplicationRunner {
         eventModel5.setLatitude(52.61479752787997);
         eventModel5.setLongitude(18.04609382464223);
 
-        eventModel6.setName("Bogusz vehicle purchase.");
+        eventModel6.setName("Bogusz's vehicle purchase.");
         eventModel6.setDescription("Bogusz will buy a tank for Polish roads.");
         eventModel6.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-11-11", "10:00 PM"));
         eventModel6.setLatitude(51.79971127975278);
@@ -149,6 +149,11 @@ public class DatabaseFiller implements ApplicationRunner {
         user2EventsSet.add(eventModel5);
         user2EventsSet.add(eventModel6);
         testUser2Model.setEvents(user2EventsSet);
+
+        testUser2Model.getUserDetailsModel().setFirstname("Janusz");
+        testUser2Model.getUserDetailsModel().setLastname("Bogusz");
+        testUser2Model.getUserDetailsModel().setBirthdate(DateAndTimeUtil.getTimestamp(1981,2,3,12,30));
+
         userService.updateUser(testUser2Model);
 
     }
@@ -157,7 +162,7 @@ public class DatabaseFiller implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 
         productionFill(); //use for production
-        //testingFill(); //use for developing
+//        testingFill(); //use for developing
 
     }
 

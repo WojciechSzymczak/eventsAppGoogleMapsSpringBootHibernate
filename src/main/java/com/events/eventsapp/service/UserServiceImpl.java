@@ -1,9 +1,11 @@
 package com.events.eventsapp.service;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 
+import com.events.eventsapp.model.UserDetailsModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,8 +24,10 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserRepository userRepository;
 
+    @Qualifier("roleRepository")
     @Autowired
     private RoleRepository roleRepository;
+
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -85,6 +89,11 @@ public class UserServiceImpl implements UserService{
         user.setActive(1);
         RoleModel userRole = roleRepository.findByRole("USER");
         user.setRoles(new HashSet<RoleModel>(Arrays.asList(userRole)));
+
+        UserDetailsModel userDetailsModel = new UserDetailsModel();
+        userDetailsModel.setJoindate(new Timestamp(System.currentTimeMillis()));
+        user.setUserDetailsModel(userDetailsModel);
+
         userRepository.save(user);
 
     }

@@ -71,4 +71,10 @@ public class DateAndTimeUtil {
         return timestamp;
     }
 
+    public static Timestamp getTimestamp(int year, int month, int day, int hour, int minute) {
+
+        return new Timestamp(year - 1900,month - 1,day,hour,minute,0,0);
+
+    }
+
 }

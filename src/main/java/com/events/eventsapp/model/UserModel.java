@@ -30,28 +30,6 @@ public class UserModel implements Serializable {
     @Column(name = "active")
     private int active;
 
-
-
-
-
-    @Column(name = "user_details_id")
-    private UserDetailsModel userDetailsModel;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_details_id")
-    public UserDetailsModel getUserDetailsModel() {
-        return userDetailsModel;
-    }
-
-    public void setUserDetailsModel(UserDetailsModel userDetailsModel) {
-        this.userDetailsModel = userDetailsModel;
-    }
-
-
-
-
-
-
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<RoleModel> roles;
@@ -59,6 +37,10 @@ public class UserModel implements Serializable {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "event_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "event_id"))
     private Set<EventModel> events;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_details_id")
+    private UserDetailsModel userDetailsModel;
 
     public Long getId() {
         return id;
@@ -117,5 +99,9 @@ public class UserModel implements Serializable {
             }
 
     }
+
+    public UserDetailsModel getUserDetailsModel() { return userDetailsModel; }
+
+    public void setUserDetailsModel(UserDetailsModel userDetailsModel) { this.userDetailsModel = userDetailsModel; }
 
 }
