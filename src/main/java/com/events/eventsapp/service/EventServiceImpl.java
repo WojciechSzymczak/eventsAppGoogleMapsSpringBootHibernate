@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service("eventService")
@@ -45,6 +46,16 @@ public class EventServiceImpl implements EventService{
 
             eventRepository.deleteEventModelById(eventId);
 
+    }
+
+    @Override
+    public List<EventModel> getAllEvents() {
+        return eventRepository.getAllEvents();
+    }
+
+    @Override
+    public List<EventModel> getEventsByName(String name) {
+        return eventRepository.getEventsbyName(name);
     }
 
 }

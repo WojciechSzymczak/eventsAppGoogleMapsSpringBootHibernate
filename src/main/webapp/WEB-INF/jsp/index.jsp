@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -30,107 +31,51 @@
         </c:if>
 
         <h1 class="display-4">Find or create event!</h1>
+
+        <br>
+
+        <form action="/index" method="get">
+            <div id="custom-search-input">
+                <div class="input-group col-md-12">
+                    <input type="text" name="name" class="form-control input-lg" placeholder="Event name" />
+                    <span class="input-group-btn">
+                            <button class="btn btn-primary btn-lg" type="submit">Search</button>
+                    </span>
+                </div>
+            </div>
+        </form>
+
+        <br><br>
+
         <p class="lead">Example events:</p>
+
     </div>
 
     <div class="container">
 
         <div class="card-deck mb-3 text-center">
-
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Example event</h4>
+            <c:forEach var="events" items="${requestScope.get('events')}">
+                <div class="card mb-4 box-shadow">
+                    <div class="card-header">
+                        <h4 class="my-0 font-weight-normal">${events.getName()}</h4>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mt-3 mb-4">
+                            <li>Start date: ${events.getBeginningDate().toString()}</li>
+                            <li>Long: ${events.getLongitude()}</li>
+                            <li>Lat: ${events.getLatitude()}</li>
+                            <li>User: ${events.getUsers().iterator().next().getName()}</li>
+                        </ul>
+                        <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">Name</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Image</li>
-                        <li>Date</li>
-                        <li>Location</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
-                </div>
-            </div>
-
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Example event</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">Name</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Image</li>
-                        <li>Date</li>
-                        <li>Location</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
-                </div>
-            </div>
-
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Example event</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">Name</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Image</li>
-                        <li>Date</li>
-                        <li>Location</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
-                </div>
-            </div>
-
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Example event</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">Name</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Image</li>
-                        <li>Date</li>
-                        <li>Location</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
-                </div>
-            </div>
-
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Example event</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">Name</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Image</li>
-                        <li>Date</li>
-                        <li>Location</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
-                </div>
-            </div>
-
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">Example event</h4>
-                </div>
-                <div class="card-body">
-                    <h1 class="card-title pricing-card-title">Name</h1>
-                    <ul class="list-unstyled mt-3 mb-4">
-                        <li>Image</li>
-                        <li>Date</li>
-                        <li>Location</li>
-                    </ul>
-                    <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
-                </div>
-            </div>
-
-
+            </c:forEach>
 
         </div>
 
+        <c:if test="${fn:length(requestScope.get('events')) == 0}">
+            <h2 class="text-center"> Sorry, no results...</h2>
+        </c:if>
 
         <%@include file="../jspf/footer.jspf"%>
 

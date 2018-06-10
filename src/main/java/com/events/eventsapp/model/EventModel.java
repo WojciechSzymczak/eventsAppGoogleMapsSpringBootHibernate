@@ -31,7 +31,7 @@ public class EventModel implements Serializable {
     @Column(name = "event_latitude")
     private Double latitude;
 
-    @ManyToMany(mappedBy = "events")
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "events")
     private Set<UserModel> users;
 
     public Long getId() {
