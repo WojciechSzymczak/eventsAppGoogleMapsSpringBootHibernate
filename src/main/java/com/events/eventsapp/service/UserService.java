@@ -18,4 +18,6 @@ public interface UserService {
 
     public void updateUser(UserModel user);
 
+    void deleteUserModelByEmail(String email);
+
 }

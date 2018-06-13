@@ -106,4 +106,12 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    @Transactional
+    @Override
+    public void deleteUserModelByEmail(String email) {
+
+        userRepository.deleteUserModelByEmail(email);
+
+    }
+
 }

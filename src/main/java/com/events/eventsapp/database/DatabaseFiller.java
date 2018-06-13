@@ -2,6 +2,7 @@ package com.events.eventsapp.database;
 
 import com.events.eventsapp.model.EventModel;
 import com.events.eventsapp.model.RoleModel;
+import com.events.eventsapp.model.TimeLinePostModel;
 import com.events.eventsapp.model.UserModel;
 import com.events.eventsapp.service.*;
 import com.events.eventsapp.util.DateAndTimeUtil;
@@ -10,6 +11,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +32,9 @@ public class DatabaseFiller implements ApplicationRunner {
 
     @Autowired
     EventService eventService = new EventServiceImpl();
+
+    @Autowired
+    TimeLinePostService timeLinePostService;
 
     /**
      * Method fills database with user's roles.
@@ -154,7 +159,34 @@ public class DatabaseFiller implements ApplicationRunner {
         testUser2Model.getUserDetailsModel().setLastname("Bogusz");
         testUser2Model.getUserDetailsModel().setBirthdate(DateAndTimeUtil.getTimestamp(1981,2,3,12,30));
 
+        TimeLinePostModel timeLinePostModel1 = new TimeLinePostModel();
+        TimeLinePostModel timeLinePostModel2 = new TimeLinePostModel();
+        timeLinePostModel1.setText("First post, hello everyone!");
+        timeLinePostModel2.setText("Second post!");
+
+        Set <TimeLinePostModel> timeLinePostModelSet = new HashSet<TimeLinePostModel>();
+        timeLinePostModel1.setUser(testUser2Model);
+        timeLinePostModel2.setUser(testUser2Model);
+        timeLinePostModel1.setPublishedDate(new Timestamp(System.currentTimeMillis()));
+        timeLinePostModel2.setPublishedDate(new Timestamp(System.currentTimeMillis()));
+        timeLinePostModelSet.add(timeLinePostModel1);
+        timeLinePostModelSet.add(timeLinePostModel2);
+
+
+        testUser2Model.setTimeLinePostModels(timeLinePostModelSet);
+
         userService.updateUser(testUser2Model);
+
+        //We need to reload our UserModel entity from database before udpating it again, otherwise exception will occur.
+//        testUser2Model = userService.findUserByEmail(testUser2Model.getEmail());
+
+        //Deleting user's time line posts(ALL):
+//        testUser2Model.setTimeLinePostModels(new HashSet<TimeLinePostModel>());
+//        timeLinePostService.deleteAllTimeLinePostsByUserModel(testUser2Model);
+//        userService.updateUser(testUser2Model);
+
+        //Deleting user and all data related to him from database.
+//        userService.deleteUserModelByEmail("Bogusz@wp.pl");
 
     }
 

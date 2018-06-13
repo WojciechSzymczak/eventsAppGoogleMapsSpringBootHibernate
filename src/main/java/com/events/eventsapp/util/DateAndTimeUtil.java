@@ -63,10 +63,7 @@ public class DateAndTimeUtil {
                     " 01:34 PM or 11:23 AM");
         }
 
-        //TODO
-        //resolve problem with 1 hour difference between applications Timestamp and database Timestamp,
-        //propably timezone problem.
-        timestamp = new Timestamp(year-1900,month-1,day,hour+1,minute,0,0);
+        timestamp = new Timestamp(year-1900,month-1,day,hour,minute,0,0);
 
         return timestamp;
     }

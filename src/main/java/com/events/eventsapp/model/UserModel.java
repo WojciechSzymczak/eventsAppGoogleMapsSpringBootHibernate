@@ -42,6 +42,9 @@ public class UserModel implements Serializable {
     @JoinColumn(name = "user_details_id")
     private UserDetailsModel userDetailsModel;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<TimeLinePostModel> timeLinePostModels;
+
     public Long getId() {
         return id;
     }
@@ -103,5 +106,9 @@ public class UserModel implements Serializable {
     public UserDetailsModel getUserDetailsModel() { return userDetailsModel; }
 
     public void setUserDetailsModel(UserDetailsModel userDetailsModel) { this.userDetailsModel = userDetailsModel; }
+
+    public Set<TimeLinePostModel> getTimeLinePostModels() { return timeLinePostModels; }
+
+    public void setTimeLinePostModels(Set<TimeLinePostModel> timeLinePostModels) { this.timeLinePostModels = timeLinePostModels; }
 
 }
