@@ -66,11 +66,13 @@
                             <li>Lat: ${events.getLatitude()}</li>
                             <li>User: ${events.getUsers().iterator().next().getName()}</li>
                         </ul>
-                        <button type="button" class="btn btn-lg btn-block btn-primary">Know more</button>
+                        <form action="/event" method="get">
+                            <input type="hidden" name="name" value="${events.getName()}">
+                            <button type="submit" class="btn btn-lg btn-block btn-primary">Know more</button>
+                        </form>
                     </div>
                 </div>
             </c:forEach>
-
         </div>
 
         <c:if test="${fn:length(requestScope.get('events')) == 0}">
