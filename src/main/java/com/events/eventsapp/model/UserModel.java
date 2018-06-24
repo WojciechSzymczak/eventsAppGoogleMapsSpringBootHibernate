@@ -103,6 +103,10 @@ public class UserModel implements Serializable {
 
     }
 
+    public void addEvent(EventModel event) {
+        this.events.add(event);
+    }
+
     public UserDetailsModel getUserDetailsModel() { return userDetailsModel; }
 
     public void setUserDetailsModel(UserDetailsModel userDetailsModel) { this.userDetailsModel = userDetailsModel; }

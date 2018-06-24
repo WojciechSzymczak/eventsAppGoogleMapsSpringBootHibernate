@@ -78,10 +78,7 @@ public class EventAddController {
             String currentPrincipalName = authentication.getName();
             UserModel userModel = userService.findUserByEmail(currentPrincipalName);
 
-            Set <EventModel> eventSet = new LinkedHashSet <EventModel>();
-            eventSet.add(eventModel);
-
-            userModel.setEvents(eventSet);
+            userModel.addEvent(eventModel);
 
             if (eventService.findEventByName(name) != null) {
                 throw new Exception("Event with name: " + name + " already exists!");
