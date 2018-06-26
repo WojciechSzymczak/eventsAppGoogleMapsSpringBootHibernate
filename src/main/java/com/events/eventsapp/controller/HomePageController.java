@@ -25,11 +25,11 @@ public class HomePageController {
         ModelAndView modelAndView = new ModelAndView("index");
 
         if(eventName != null) {
-            List<EventModel> eventModelList = eventService.getEventsByName(eventName);
+            List<EventModel> eventModelList = eventService.getActualEventsByName(eventName);
             modelAndView.addObject("events", eventModelList);
 
         } else if(eventName == null || eventName.equals("")){
-            List<EventModel> eventModelList = eventService.getAllEvents();
+            List<EventModel> eventModelList = eventService.getAllActualEvents();
             modelAndView.addObject("events", eventModelList);
         }
 

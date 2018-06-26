@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,13 +51,33 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public List<EventModel> getAllEvents() {
-        return eventRepository.getAllEvents();
+    public List<EventModel> getAllActualEvents() {
+
+        List<EventModel> eventModelList = eventRepository.getAllEvents();
+        List<EventModel> actualEventModelList = new LinkedList<EventModel>();
+
+        for(EventModel e : eventModelList) {
+            if(new Timestamp(System.currentTimeMillis()).compareTo(e.getBeginningDate()) <= 0) {
+                actualEventModelList.add(e);
+            }
+        }
+
+        return actualEventModelList;
     }
 
     @Override
-    public List<EventModel> getEventsByName(String name) {
-        return eventRepository.getEventsbyName(name);
+    public List<EventModel> getActualEventsByName(String name) {
+
+        List<EventModel> eventModelList = eventRepository.getEventsbyName(name);
+        List<EventModel> actualEventModelList = new LinkedList<EventModel>();
+
+        for(EventModel e : eventModelList) {
+            if(new Timestamp(System.currentTimeMillis()).compareTo(e.getBeginningDate()) <= 0) {
+                actualEventModelList.add(e);
+            }
+        }
+
+        return actualEventModelList;
     }
 
 }

@@ -15,8 +15,8 @@ public interface EventService {
 
     void deleteEventById(Long eventId);
 
-    List<EventModel> getAllEvents();
+    List<EventModel> getAllActualEvents();
 
-    List<EventModel> getEventsByName(String name);
+    List<EventModel> getActualEventsByName(String name);
 
 }
