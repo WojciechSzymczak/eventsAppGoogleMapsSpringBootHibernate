@@ -61,6 +61,14 @@
                     </div>
                     <div class="card-body">
                         <ul class="list-unstyled mt-3 mb-4">
+                                <%--If event has a category, it's name will be listed.--%>
+                            <c:if test="${events.getEventCategoryModels().size() > 0}">
+                                <li>Category: ${events.getEventCategoryModels().iterator().next().getName()}</li>
+                            </c:if>
+                                <%--If event has no category, ,,none'' will appear. --%>
+                            <c:if test="${events.getEventCategoryModels().size() == 0 || events.getEventCategoryModels() == null}">
+                                <li>Category: none</li>
+                            </c:if>
                             <li>Start date: ${events.getBeginningDate().toString()}</li>
                             <li>Long: ${events.getLongitude()}</li>
                             <li>Lat: ${events.getLatitude()}</li>

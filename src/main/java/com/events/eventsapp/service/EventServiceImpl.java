@@ -20,6 +20,9 @@ public class EventServiceImpl implements EventService{
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private EventCategoryService eventCategoryService;
+
     @Override
     public EventModel findEventByName(String eventName) {
 
@@ -58,7 +61,9 @@ public class EventServiceImpl implements EventService{
 
         for(EventModel e : eventModelList) {
             if(new Timestamp(System.currentTimeMillis()).compareTo(e.getBeginningDate()) <= 0) {
+
                 actualEventModelList.add(e);
+
             }
         }
 
@@ -73,7 +78,9 @@ public class EventServiceImpl implements EventService{
 
         for(EventModel e : eventModelList) {
             if(new Timestamp(System.currentTimeMillis()).compareTo(e.getBeginningDate()) <= 0) {
+
                 actualEventModelList.add(e);
+
             }
         }
 

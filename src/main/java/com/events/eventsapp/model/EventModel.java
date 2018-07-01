@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -33,6 +34,11 @@ public class EventModel implements Serializable {
 
     @ManyToMany(fetch = FetchType.EAGER, mappedBy = "events")
     private Set<UserModel> users;
+
+    //Cannot use CascadeType.REMOVE because when deleting user from database, category would be also removed.
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "event_categories_join", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "event_category_id"))
+    private Set<EventCategoryModel> eventCategoryModels;
 
     public Long getId() {
         return id;
@@ -88,6 +94,25 @@ public class EventModel implements Serializable {
 
     public void setUsers(Set<UserModel> users) {
         this.users = users;
+    }
+
+    public Set<EventCategoryModel> getEventCategoryModels() { return this.eventCategoryModels; }
+
+    public void setEventCategoryModels(Set<EventCategoryModel> eventCategoryModels) { this.eventCategoryModels = eventCategoryModels; }
+
+    public void addEventCategoryModel(EventCategoryModel eventCategoryModel) {
+
+        if(this.eventCategoryModels == null) {
+
+            this.eventCategoryModels = new HashSet<EventCategoryModel>();
+            this.eventCategoryModels.add(eventCategoryModel);
+
+        } else {
+
+            this.eventCategoryModels.add(eventCategoryModel);
+
+        }
+
     }
 
 }

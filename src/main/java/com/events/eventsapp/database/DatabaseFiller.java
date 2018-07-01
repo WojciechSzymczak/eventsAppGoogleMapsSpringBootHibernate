@@ -1,9 +1,6 @@
 package com.events.eventsapp.database;
 
-import com.events.eventsapp.model.EventModel;
-import com.events.eventsapp.model.RoleModel;
-import com.events.eventsapp.model.TimeLinePostModel;
-import com.events.eventsapp.model.UserModel;
+import com.events.eventsapp.model.*;
 import com.events.eventsapp.service.*;
 import com.events.eventsapp.util.DateAndTimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,22 +22,26 @@ import java.util.Set;
 public class DatabaseFiller implements ApplicationRunner {
 
     @Autowired
-    RoleService roleService = new RoleServiceImpl();
+    RoleService roleService;
 
     @Autowired
-    UserService userService = new UserServiceImpl();
+    UserService userService;
 
     @Autowired
-    EventService eventService = new EventServiceImpl();
+    EventService eventService;
 
     @Autowired
     TimeLinePostService timeLinePostService;
 
+    @Autowired
+    EventCategoryService eventCategoryService;
+
     /**
-     * Method fills database with user's roles.
+     * Method fills database with user's roles and event's categories.
      */
     public void productionFill() {
 
+        //Adding roles to database:
         RoleModel userRole = new RoleModel();
         RoleModel adminRole = new RoleModel();
 
@@ -52,6 +53,19 @@ public class DatabaseFiller implements ApplicationRunner {
 
         roleService.saveRole(userRole);
         roleService.saveRole(adminRole);
+
+        //Adding event's categories:
+        EventCategoryModel eventCategoryModel1 = new EventCategoryModel();
+        EventCategoryModel eventCategoryModel2 = new EventCategoryModel();
+        EventCategoryModel eventCategoryModel3 = new EventCategoryModel();
+
+        eventCategoryModel1.setName("Parties & social life");
+        eventCategoryModel2.setName("Automotive");
+        eventCategoryModel3.setName("Concert");
+
+        eventCategoryService.saveEventCategoryModel(eventCategoryModel1);
+        eventCategoryService.saveEventCategoryModel(eventCategoryModel2);
+        eventCategoryService.saveEventCategoryModel(eventCategoryModel3);
 
     }
 
@@ -149,6 +163,10 @@ public class DatabaseFiller implements ApplicationRunner {
         eventModel6.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-11-11", "10:00 PM"));
         eventModel6.setLatitude(51.79971127975278);
         eventModel6.setLongitude(19.46422394609382);
+
+        //Adding category to event:
+        EventCategoryModel eventCategoryModel1 = eventCategoryService.findEventCategoryModelByName("Automotive");
+        eventModel6.addEventCategoryModel(eventCategoryModel1);
 
         Set <EventModel> user2EventsSet = new HashSet<EventModel>();
         user2EventsSet.add(eventModel5);
