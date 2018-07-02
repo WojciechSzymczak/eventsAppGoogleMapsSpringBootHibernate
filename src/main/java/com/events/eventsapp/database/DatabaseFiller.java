@@ -96,7 +96,7 @@ public class DatabaseFiller implements ApplicationRunner {
 
         eventModel1.setName("Admin's party.");
         eventModel1.setDescription("Admin LAN party.");
-        eventModel1.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-06-09", "02:03 PM"));
+        eventModel1.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-10-09", "02:03 PM"));
         eventModel1.setLatitude(51.76147975278799);
         eventModel1.setLongitude(19.46422304609382);
 
@@ -138,7 +138,7 @@ public class DatabaseFiller implements ApplicationRunner {
 
         eventModel4.setName("Nowak's birthday party.");
         eventModel4.setDescription("Nowak turn's 42.");
-        eventModel4.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-01-01", "03:00 AM"));
+        eventModel4.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-08-24", "03:00 AM"));
         eventModel4.setLatitude(51.11279752787997);
         eventModel4.setLongitude(19.94609382464223);
 
@@ -154,7 +154,7 @@ public class DatabaseFiller implements ApplicationRunner {
 
         eventModel5.setName("Bogusz's party.");
         eventModel5.setDescription("Bogusz will have fun.");
-        eventModel5.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-06-30", "04:00 PM"));
+        eventModel5.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-08-30", "04:00 PM"));
         eventModel5.setLatitude(52.61479752787997);
         eventModel5.setLongitude(18.04609382464223);
 

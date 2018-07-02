@@ -16,8 +16,33 @@ public interface EventRepository extends JpaRepository<EventModel, Long> {
     void deleteEventModelById(Long eventId);
 
     @Query("select e from EventModel e")
-    List<EventModel> getAllEvents();
+    List<EventModel> getEvents();
 
     @Query("select e from EventModel e where e.name like %?1%")
     List<EventModel> getEventsbyName(String name);
+
+    @Query("select e from EventModel e where e.name like %?1% order by e.name asc")
+    List<EventModel> getEventsByNameOrderByNameAsc(String name);
+
+    @Query("select e from EventModel e where e.name like %?1% order by e.name desc")
+    List<EventModel> getEventsByNameOrderByNameDesc(String name);
+
+    @Query("select e from EventModel e where e.name like %?1% order by e.beginningDate asc")
+    List<EventModel> getEventsByNameOrderByBeginningDateAsc(String name);
+
+    @Query("select e from EventModel e where e.name like %?1% order by e.beginningDate desc")
+    List<EventModel> getEventsByNameOrderByBeginningDateDesc(String name);
+
+    @Query("select e from EventModel e order by e.name asc")
+    List<EventModel> getEventsOrderByNameAsc();
+
+    @Query("select e from EventModel e order by e.name desc")
+    List<EventModel> getEventsOrderByNameDesc();
+
+    @Query("select e from EventModel e order by e.beginningDate asc")
+    List<EventModel> getEventsOrderByBeginningDateAsc();
+
+    @Query("select e from EventModel e order by e.beginningDate desc")
+    List<EventModel> getEventsOrderByBeginningDateDesc();
+
 }

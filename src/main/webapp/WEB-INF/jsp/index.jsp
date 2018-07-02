@@ -36,13 +36,31 @@
 
         <form action="/index" method="get">
             <div id="custom-search-input">
-                <div class="input-group col-md-12">
+                <div class="input-group">
                     <input type="text" name="name" class="form-control input-lg" placeholder="Event name" />
                     <span class="input-group-btn">
                             <button class="btn btn-primary btn-lg" type="submit">Search</button>
                     </span>
                 </div>
             </div>
+
+            <h4 class="m-3" align="left">Sort:</h4>
+
+            <select class="d-inline form-control col-4" name="sortMode">
+                <option value="nameAsc">By name ascending</option>
+                <option value="nameDesc">By name descending</option>
+                <option value="timeAsc">By beginning time: soonest first</option>
+                <option value="timeDesc">By beginning time: latest first</option>
+            </select>
+
+            <select class="d-inline form-control col-4" name="eventCategory">
+                <option value="everycategory">Every category</option>
+                <option value="nocategory">No category only</option>
+                <c:forEach var="categories" items="${categories}">
+                    <option value="${categories.name}">${categories.name}</option>
+                </c:forEach>
+            </select>
+
         </form>
 
         <br><br>

@@ -13,7 +13,7 @@ public class EventCategoryModel implements Serializable {
     @Column(name = "event_category_id")
     private Long id;
 
-    @Column(name = "event_category_name")
+    @Column(name = "event_category_name", unique = true)
     private String name;
 
     @ManyToMany(mappedBy = "eventCategoryModels")
