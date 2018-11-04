@@ -1,7 +1,8 @@
 package com.events.eventsapp.controller;
 
 import com.events.eventsapp.model.EventModel;
-import com.events.eventsapp.service.EventService;
+import com.events.eventsapp.service.interfaces.IEventService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class EventViewController {
 
     @Autowired
-    EventService eventService;
+    IEventService iEventService;
 
     @RequestMapping(path = "/event", method = RequestMethod.GET)
     public @ResponseBody ModelAndView eventViewGet(@RequestParam(name = "name", required = false) String eventName) {
@@ -28,7 +29,7 @@ public class EventViewController {
 
         }
 
-        EventModel eventModel = eventService.findEventByName(eventName);
+        EventModel eventModel = iEventService.findEventByName(eventName);
 
         if(eventModel == null) {
 

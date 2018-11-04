@@ -1,6 +1,6 @@
 package com.events.eventsapp.util;
 
-import com.events.eventsapp.configuration.exception.InvalidArgumentTypeException;
+import com.events.eventsapp.exception.InvalidArgumentTypeException;
 
 import java.sql.Timestamp;
 

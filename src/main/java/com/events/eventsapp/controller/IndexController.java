@@ -2,8 +2,9 @@ package com.events.eventsapp.controller;
 
 import com.events.eventsapp.model.EventCategoryModel;
 import com.events.eventsapp.model.EventModel;
-import com.events.eventsapp.service.EventCategoryService;
-import com.events.eventsapp.service.EventService;
+import com.events.eventsapp.service.interfaces.IEventCategoryService;
+import com.events.eventsapp.service.interfaces.IEventService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +17,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 @Controller
-public class HomePageController {
+public class IndexController {
 
     @Autowired
-    EventService eventService;
+    IEventService iEventService;
 
     @Autowired
-    EventCategoryService eventCategoryService;
+    IEventCategoryService iEventCategoryService;
 
     @RequestMapping(path = {"/","/index","/home"}, method = RequestMethod.GET)
     public @ResponseBody ModelAndView getHomePage(@RequestParam(name = "order", required = false) String orderMode,
@@ -36,29 +37,29 @@ public class HomePageController {
 
         //TODO simplify parameter checking
         if(eventName == null && sortMode == null){
-            eventModelList = eventService.getActualEvents();
+            eventModelList = iEventService.getActualEvents();
             modelAndView.addObject("events", eventModelList);
 
         } else if((eventName != null && !eventName.trim().equals("")) && sortMode == null) {
 
-            eventModelList = eventService.getActualEventsByName(eventName);
+            eventModelList = iEventService.getActualEventsByName(eventName);
             modelAndView.addObject("events", eventModelList);
 
         } else if((eventName.trim().equals("") || eventName == null) && (!sortMode.trim().equals("") && sortMode != null)) {
 
-            eventModelList = eventService.getActualEventsAndSort(sortMode);
+            eventModelList = iEventService.getActualEventsAndSort(sortMode);
             modelAndView.addObject("events", eventModelList);
 
         } else if((eventName != null && !(eventName.trim().equals(""))) && (!(sortMode.trim().equals("")) && sortMode != null)) {
 
-            eventModelList = eventService.getActualEventsByNameAndSort(eventName,sortMode);
+            eventModelList = iEventService.getActualEventsByNameAndSort(eventName,sortMode);
             modelAndView.addObject("events", eventModelList);
 
         }
 
         if(eventCategory != null) {
 
-            EventCategoryModel eventCategoryModel = eventCategoryService.findEventCategoryModelByName(eventCategory);
+            EventCategoryModel eventCategoryModel = iEventCategoryService.findEventCategoryModelByName(eventCategory);
 
             if(eventCategory.equals("nocategory")) {
 
@@ -90,7 +91,7 @@ public class HomePageController {
 
         }
 
-        List<EventCategoryModel> eventCategoryModelList = eventCategoryService.findEventCategoryModels();
+        List<EventCategoryModel> eventCategoryModelList = iEventCategoryService.findEventCategoryModels();
         modelAndView.addObject("categories", eventCategoryModelList);
 
         return modelAndView;

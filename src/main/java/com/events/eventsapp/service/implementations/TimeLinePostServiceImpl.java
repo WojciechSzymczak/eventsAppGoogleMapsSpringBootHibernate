@@ -1,23 +1,25 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.implementations;
 
 import com.events.eventsapp.model.UserModel;
-import com.events.eventsapp.repositories.TimeLinePostRepository;
+import com.events.eventsapp.repositories.ITimeLinePostRepository;
+import com.events.eventsapp.service.interfaces.ITimeLinePostService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service("timeLinePostService")
-public class TimeLinePostServiceImpl implements TimeLinePostService{
+public class TimeLinePostServiceImpl implements ITimeLinePostService {
 
     @Qualifier("timeLinePostRepository")
     @Autowired
-    TimeLinePostRepository timeLinePostRepository;
+    ITimeLinePostRepository iTimeLinePostRepository;
 
     @Transactional
     @Override
     public void deleteAllTimeLinePostsByUserModel(UserModel userModel) {
-        timeLinePostRepository.deleteByUser(userModel);
+        iTimeLinePostRepository.deleteByUser(userModel);
     }
 
 }

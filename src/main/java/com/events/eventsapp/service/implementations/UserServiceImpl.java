@@ -1,32 +1,33 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.implementations;
+
+import com.events.eventsapp.model.UserDetailsModel;
+import com.events.eventsapp.model.RoleModel;
+import com.events.eventsapp.model.UserModel;
+import com.events.eventsapp.repositories.IRoleRepository;
+import com.events.eventsapp.repositories.IUserRepository;
+import com.events.eventsapp.service.interfaces.IUserService;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Optional;
 
-import com.events.eventsapp.model.UserDetailsModel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
-import com.events.eventsapp.model.RoleModel;
-import com.events.eventsapp.model.UserModel;
-import com.events.eventsapp.repositories.RoleRepository;
-import com.events.eventsapp.repositories.UserRepository;
-import org.springframework.transaction.annotation.Transactional;
-
 @Service("userService")
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements IUserService {
 
     @Qualifier("userRepository")
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository iUserRepository;
 
     @Qualifier("roleRepository")
     @Autowired
-    private RoleRepository roleRepository;
+    private IRoleRepository iRoleRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -34,28 +35,28 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserModel findUserByEmail(String email) {
 
-        return userRepository.findByEmail(email);
+        return iUserRepository.findByEmail(email);
 
     }
 
     @Override
     public UserModel findUserByName(String username) {
 
-        return userRepository.findByName(username);
+        return iUserRepository.findByName(username);
 
     }
 
     @Override
     public Optional <UserModel> findUserById(Long Id) {
 
-        return userRepository.findById(Id);
+        return iUserRepository.findById(Id);
 
     }
 
     @Override
     public UserModel validateUser(String email, String password) {
 
-        UserModel userModel = userRepository.findByEmail(email);
+        UserModel userModel = iUserRepository.findByEmail(email);
 
         if (userModel != null) {
 
@@ -87,14 +88,14 @@ public class UserServiceImpl implements UserService{
 
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setActive(1);
-        RoleModel userRole = roleRepository.findByRole("USER");
+        RoleModel userRole = iRoleRepository.findByRole("USER");
         user.setRoles(new HashSet<RoleModel>(Arrays.asList(userRole)));
 
         UserDetailsModel userDetailsModel = new UserDetailsModel();
         userDetailsModel.setJoindate(new Timestamp(System.currentTimeMillis()));
         user.setUserDetailsModel(userDetailsModel);
 
-        userRepository.save(user);
+        iUserRepository.save(user);
 
     }
 
@@ -102,7 +103,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUser(UserModel user) {
 
-        userRepository.save(user);
+        iUserRepository.save(user);
 
     }
 
@@ -110,7 +111,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteUserModelByEmail(String email) {
 
-        userRepository.deleteUserModelByEmail(email);
+        iUserRepository.deleteUserModelByEmail(email);
 
     }
 

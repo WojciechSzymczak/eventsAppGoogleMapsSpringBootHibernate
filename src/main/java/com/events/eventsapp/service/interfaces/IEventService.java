@@ -1,11 +1,11 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.interfaces;
 
 import com.events.eventsapp.model.EventModel;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface EventService {
+public interface IEventService {
 
     EventModel findEventByName(String eventName);
 

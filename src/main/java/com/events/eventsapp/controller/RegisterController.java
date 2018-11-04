@@ -2,8 +2,9 @@ package com.events.eventsapp.controller;
 
 
 import com.events.eventsapp.model.UserModel;
-import com.events.eventsapp.service.UserService;
-import com.events.eventsapp.service.UserServiceImpl;
+import com.events.eventsapp.service.interfaces.IUserService;
+import com.events.eventsapp.service.implementations.UserServiceImpl;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class RegisterController {
 
     @Autowired
-    UserService userService = new UserServiceImpl();
+    IUserService iUserService = new UserServiceImpl();
 
     @RequestMapping(path = "/register", method = RequestMethod.GET)
     public @ResponseBody ModelAndView register() {
@@ -41,11 +42,11 @@ public class RegisterController {
                 throw new Exception("Re-entered password doesn't match.");
             }
 
-            if (userService.findUserByEmail(email) != null) {
+            if (iUserService.findUserByEmail(email) != null) {
                 throw new Exception("An e-mail given is already in database.");
             }
 
-            if (userService.findUserByName(username) != null) {
+            if (iUserService.findUserByName(username) != null) {
                 throw new Exception("A username given is already in database.");
             }
 
@@ -55,7 +56,7 @@ public class RegisterController {
             userModel.setName(username);
             userModel.setPassword(password);
 
-            userService.saveJustRegisteredUser(userModel);
+            iUserService.saveJustRegisteredUser(userModel);
 
             mav = new ModelAndView("index");
             mav.addObject("message",

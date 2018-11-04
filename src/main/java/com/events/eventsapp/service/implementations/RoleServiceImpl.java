@@ -1,26 +1,28 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.implementations;
 
 import com.events.eventsapp.model.RoleModel;
-import com.events.eventsapp.repositories.RoleRepository;
+import com.events.eventsapp.repositories.IRoleRepository;
+import com.events.eventsapp.service.interfaces.IRoleService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service("roleService")
-public class RoleServiceImpl implements RoleService {
+public class RoleServiceImpl implements IRoleService {
 
     @Qualifier("roleRepository")
     @Autowired
-    RoleRepository roleRepository;
+    IRoleRepository iRoleRepository;
 
     @Override
     public RoleModel findRoleByName(String roleName) {
-        return roleRepository.findByRole(roleName);
+        return iRoleRepository.findByRole(roleName);
     }
 
     @Override
     public void saveRole(RoleModel roleModel) {
-        roleRepository.save(roleModel);
+        iRoleRepository.save(roleModel);
     }
 
 }

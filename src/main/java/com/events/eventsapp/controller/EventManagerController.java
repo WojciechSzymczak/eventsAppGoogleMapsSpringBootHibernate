@@ -1,10 +1,10 @@
 package com.events.eventsapp.controller;
 
 import com.events.eventsapp.model.UserModel;
-import com.events.eventsapp.service.EventService;
-import com.events.eventsapp.service.EventServiceImpl;
-import com.events.eventsapp.service.UserService;
-import com.events.eventsapp.service.UserServiceImpl;
+import com.events.eventsapp.service.interfaces.IEventService;
+import com.events.eventsapp.service.interfaces.IUserService;
+import com.events.eventsapp.service.implementations.EventServiceImpl;
+import com.events.eventsapp.service.implementations.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,10 +19,10 @@ import org.springframework.web.servlet.ModelAndView;
 public class EventManagerController {
 
     @Autowired
-    EventService eventService = new EventServiceImpl();
+    IEventService iEventService = new EventServiceImpl();
 
     @Autowired
-    UserService userService = new UserServiceImpl();
+    IUserService iUserService = new UserServiceImpl();
 
     @RequestMapping(path = "/eventManager", method = RequestMethod.GET)
     public @ResponseBody ModelAndView getTestView() {
@@ -32,7 +32,7 @@ public class EventManagerController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String principalName = auth.getName();
 
-        UserModel userModel = userService.findUserByEmail(principalName);
+        UserModel userModel = iUserService.findUserByEmail(principalName);
 
         modelAndView.addObject("userModel",userModel);
 
@@ -51,7 +51,7 @@ public class EventManagerController {
 
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 String principalName = auth.getName();
-                UserModel userModel = userService.findUserByEmail(principalName);
+                UserModel userModel = iUserService.findUserByEmail(principalName);
 
                 Long parsedEventId = Long.parseLong(toDelEventId);
 
@@ -59,10 +59,10 @@ public class EventManagerController {
                     userModel.deleteEventById(parsedEventId);
 
                     //This saves altered UserModel to database so a record in join table ,,event_user'' linking users and events is deleted.
-                    userService.updateUser(userModel);
+                    iUserService.updateUser(userModel);
 
                     //This line deletes record in events table.
-                    eventService.deleteEventById(parsedEventId);
+                    iEventService.deleteEventById(parsedEventId);
 
                     //TODO find more elegant way to deal with deleting entities in ManyToMany relationship.
 

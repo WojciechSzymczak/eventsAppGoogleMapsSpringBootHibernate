@@ -1,9 +1,8 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.interfaces;
 
 import com.events.eventsapp.model.UserModel;
 
-
-public interface TimeLinePostService {
+public interface ITimeLinePostService {
 
     void deleteAllTimeLinePostsByUserModel(UserModel userModel);
 

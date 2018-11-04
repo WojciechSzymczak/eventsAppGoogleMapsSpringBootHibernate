@@ -1,4 +1,4 @@
-package com.events.eventsapp.configuration.exception;
+package com.events.eventsapp.exception;
 
 public class InvalidArgumentTypeException extends RuntimeException{
 

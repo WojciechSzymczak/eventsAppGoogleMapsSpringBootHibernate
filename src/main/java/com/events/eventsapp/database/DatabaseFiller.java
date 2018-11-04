@@ -1,14 +1,17 @@
 package com.events.eventsapp.database;
 
 import com.events.eventsapp.model.*;
-import com.events.eventsapp.service.*;
+import com.events.eventsapp.service.interfaces.*;
 import com.events.eventsapp.util.DateAndTimeUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
+
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,19 +25,22 @@ import java.util.Set;
 public class DatabaseFiller implements ApplicationRunner {
 
     @Autowired
-    RoleService roleService;
+    IRoleService iRoleService;
 
     @Autowired
-    UserService userService;
+    IUserService iUserService;
 
     @Autowired
-    EventService eventService;
+    IEventService iEventService;
 
     @Autowired
-    TimeLinePostService timeLinePostService;
+    ITimeLinePostService iTimeLinePostService;
 
     @Autowired
-    EventCategoryService eventCategoryService;
+    IEventCategoryService iEventCategoryService;
+
+    @Value("${spring.datasource.password}")
+    private String springDatasourcePassword;
 
     /**
      * Method fills database with user's roles and event's categories.
@@ -51,21 +57,31 @@ public class DatabaseFiller implements ApplicationRunner {
         adminRole.setRole("ADMIN");
         adminRole.setId(2);
 
-        roleService.saveRole(userRole);
-        roleService.saveRole(adminRole);
+        iRoleService.saveRole(userRole);
+        iRoleService.saveRole(adminRole);
 
         //Adding event's categories:
-        EventCategoryModel eventCategoryModel1 = new EventCategoryModel();
-        EventCategoryModel eventCategoryModel2 = new EventCategoryModel();
-        EventCategoryModel eventCategoryModel3 = new EventCategoryModel();
+        EventCategoryModel eventCategoryModel1 = iEventCategoryService.findEventCategoryModelByName("Parties & social life");
+        EventCategoryModel eventCategoryModel2 = iEventCategoryService.findEventCategoryModelByName("Automotive");
+        EventCategoryModel eventCategoryModel3 = iEventCategoryService.findEventCategoryModelByName("Concert");
 
-        eventCategoryModel1.setName("Parties & social life");
-        eventCategoryModel2.setName("Automotive");
-        eventCategoryModel3.setName("Concert");
+        if(eventCategoryModel1 == null) {
+            eventCategoryModel1 = new EventCategoryModel();
+            eventCategoryModel1.setName("Parties & social life");
+        }
+        if(eventCategoryModel2 == null) {
+            eventCategoryModel2 = new EventCategoryModel();
+            eventCategoryModel2.setName("Automotive");
+        }
+        if(eventCategoryModel3 == null) {
+            eventCategoryModel3 = new EventCategoryModel();
+            eventCategoryModel3.setName("Concert");
+        }
 
-        eventCategoryService.saveEventCategoryModel(eventCategoryModel1);
-        eventCategoryService.saveEventCategoryModel(eventCategoryModel2);
-        eventCategoryService.saveEventCategoryModel(eventCategoryModel3);
+
+        iEventCategoryService.saveEventCategoryModel(eventCategoryModel1);
+        iEventCategoryService.saveEventCategoryModel(eventCategoryModel2);
+        iEventCategoryService.saveEventCategoryModel(eventCategoryModel3);
 
     }
 
@@ -84,11 +100,11 @@ public class DatabaseFiller implements ApplicationRunner {
         testAdminModel.setEmail("Kowalski@wp.pl");
         testAdminModel.setPassword("haslo123");
         testAdminModel.setName("kowal");
-        userService.saveJustRegisteredUser(testAdminModel);
+        iUserService.saveJustRegisteredUser(testAdminModel);
 
         //Changing from USER role to ADMIN:
-        testAdminModel.setRoles(new HashSet<RoleModel>(Arrays.asList(roleService.findRoleByName("ADMIN"))));
-        userService.updateUser(testAdminModel);
+        testAdminModel.setRoles(new HashSet<RoleModel>(Arrays.asList(iRoleService.findRoleByName("ADMIN"))));
+        iUserService.updateUser(testAdminModel);
 
         //Creating admin's events:
         EventModel eventModel1 = new EventModel();
@@ -110,7 +126,7 @@ public class DatabaseFiller implements ApplicationRunner {
         adminEventsSet.add(eventModel1);
         adminEventsSet.add(eventModel2);
         testAdminModel.setEvents(adminEventsSet);
-        userService.updateUser(testAdminModel);
+        iUserService.updateUser(testAdminModel);
 
 
 
@@ -118,12 +134,12 @@ public class DatabaseFiller implements ApplicationRunner {
         testUser1Model.setEmail("Nowak@wp.pl");
         testUser1Model.setPassword("haslo123");
         testUser1Model.setName("nowak");
-        userService.saveJustRegisteredUser(testUser1Model);
+        iUserService.saveJustRegisteredUser(testUser1Model);
 
         testUser2Model.setEmail("Bogusz@wp.pl");
         testUser2Model.setPassword("haslo123");
         testUser2Model.setName("bogusz");
-        userService.saveJustRegisteredUser(testUser2Model);
+        iUserService.saveJustRegisteredUser(testUser2Model);
 
         //Creating user's events:
         //For Nowak:
@@ -146,7 +162,7 @@ public class DatabaseFiller implements ApplicationRunner {
         user1EventsSet.add(eventModel3);
         user1EventsSet.add(eventModel4);
         testUser1Model.setEvents(user1EventsSet);
-        userService.updateUser(testUser1Model);
+        iUserService.updateUser(testUser1Model);
 
         //For Bogusz:
         EventModel eventModel5 = new EventModel();
@@ -165,7 +181,7 @@ public class DatabaseFiller implements ApplicationRunner {
         eventModel6.setLongitude(19.46422394609382);
 
         //Adding category to event:
-        EventCategoryModel eventCategoryModel1 = eventCategoryService.findEventCategoryModelByName("Automotive");
+        EventCategoryModel eventCategoryModel1 = iEventCategoryService.findEventCategoryModelByName("Automotive");
         eventModel6.addEventCategoryModel(eventCategoryModel1);
 
         Set <EventModel> user2EventsSet = new HashSet<EventModel>();
@@ -193,18 +209,18 @@ public class DatabaseFiller implements ApplicationRunner {
 
         testUser2Model.setTimeLinePostModels(timeLinePostModelSet);
 
-        userService.updateUser(testUser2Model);
+        iUserService.updateUser(testUser2Model);
 
         //We need to reload our UserModel entity from database before udpating it again, otherwise exception will occur.
-//        testUser2Model = userService.findUserByEmail(testUser2Model.getEmail());
+//        testUser2Model = iUserService.findUserByEmail(testUser2Model.getEmail());
 
         //Deleting user's time line posts(ALL):
 //        testUser2Model.setTimeLinePostModels(new HashSet<TimeLinePostModel>());
-//        timeLinePostService.deleteAllTimeLinePostsByUserModel(testUser2Model);
-//        userService.updateUser(testUser2Model);
+//        iTimeLinePostService.deleteAllTimeLinePostsByUserModel(testUser2Model);
+//        iUserService.updateUser(testUser2Model);
 
         //Deleting user and all data related to him from database.
-//        userService.deleteUserModelByEmail("Bogusz@wp.pl");
+//        iUserService.deleteUserModelByEmail("Bogusz@wp.pl");
 
     }
 

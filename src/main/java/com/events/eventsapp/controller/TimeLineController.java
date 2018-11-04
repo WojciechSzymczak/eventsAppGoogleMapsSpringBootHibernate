@@ -2,7 +2,8 @@ package com.events.eventsapp.controller;
 
 import com.events.eventsapp.model.TimeLinePostModel;
 import com.events.eventsapp.model.UserModel;
-import com.events.eventsapp.service.UserService;
+import com.events.eventsapp.service.interfaces.IUserService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,19 +20,19 @@ import java.util.Set;
 public class TimeLineController {
 
     @Autowired
-    UserService userService;
+    IUserService iUserService;
 
     @RequestMapping(path = "/timeline", method = RequestMethod.GET)
     public @ResponseBody ModelAndView timeLineGet(@RequestParam(required = false) String userName) {
 
         ModelAndView modelAndView = new ModelAndView("user/timeLine");
 
-        UserModel userModel = userService.findUserByName(userName);
+        UserModel userModel = iUserService.findUserByName(userName);
 
         if(userModel == null) {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            userModel = userService.findUserByEmail(auth.getName());
+            userModel = iUserService.findUserByEmail(auth.getName());
 
         }
 

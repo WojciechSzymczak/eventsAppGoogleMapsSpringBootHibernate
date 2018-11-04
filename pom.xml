@@ -25,74 +25,61 @@
 	</properties>
 
 	<dependencies>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.tomcat.embed</groupId>
 			<artifactId>tomcat-embed-jasper</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
 		</dependency>
-
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
         </dependency>
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.9-rc</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<version>5.0.3.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
 			<version>5.0.3.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
 			<version>5.0.4.RELEASE</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
@@ -104,5 +91,46 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<profile>
+			<id>openshift</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-war-plugin</artifactId>
+						<version>${maven-war-plugin.version}</version>
+						<configuration>
+							<outputDirectory>deployments</outputDirectory>
+							<warName>EVENTS_APP_ROOT</warName>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+			<properties>
+				<SPRING_DATASOURCE_URL>jdbc:mysql://localhost:3306/events_database?serverTimezone=Europe/Warsaw&amp;verifyServerCertificate=false&amp;useSSL=true</SPRING_DATASOURCE_URL>
+			</properties>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<build>
+			</build>
+			<properties>
+				<SPRING_DATASOURCE_URL>jdbc:mysql://localhost:3306/events_database?serverTimezone=Europe/Warsaw&amp;verifyServerCertificate=false&amp;useSSL=true</SPRING_DATASOURCE_URL>
+				<SPRING_DATASOURCE_USERNAME>webappspringuser</SPRING_DATASOURCE_USERNAME>
+				<SPRING_DATASOURCE_PASSWORD>f7=en5^7-uCG?yHt</SPRING_DATASOURCE_PASSWORD>
+			</properties>
+		</profile>
+		<profile>
+			<id>test</id>
+			<build>
+			</build>
+			<properties>
+				<SPRING_DATASOURCE_URL>jdbc:mysql://localhost:3306/events_database?serverTimezone=Europe/Warsaw&amp;verifyServerCertificate=false&amp;useSSL=true</SPRING_DATASOURCE_URL>
+				<SPRING_DATASOURCE_USERNAME>webappspringuser</SPRING_DATASOURCE_USERNAME>
+				<SPRING_DATASOURCE_PASSWORD>f7=en5^7-uCG?yHt</SPRING_DATASOURCE_PASSWORD>
+				<SPRING_DATASOURCE_JNDI_NAME>wartosctestowa123</SPRING_DATASOURCE_JNDI_NAME>
+			</properties>
+		</profile>
+	</profiles>
 
 </project>

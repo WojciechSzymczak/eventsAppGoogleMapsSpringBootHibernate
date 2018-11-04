@@ -1,12 +1,12 @@
 package com.events.eventsapp.controller;
 
-import com.events.eventsapp.configuration.exception.InvalidArgumentTypeException;
+import com.events.eventsapp.exception.InvalidArgumentTypeException;
 import com.events.eventsapp.model.EventModel;
 import com.events.eventsapp.model.UserModel;
-import com.events.eventsapp.service.EventService;
-import com.events.eventsapp.service.EventServiceImpl;
-import com.events.eventsapp.service.UserService;
-import com.events.eventsapp.service.UserServiceImpl;
+import com.events.eventsapp.service.interfaces.IEventService;
+import com.events.eventsapp.service.interfaces.IUserService;
+import com.events.eventsapp.service.implementations.EventServiceImpl;
+import com.events.eventsapp.service.implementations.UserServiceImpl;
 import com.events.eventsapp.util.DateAndTimeUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,22 +20,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Controller
 public class EventAddController {
 
     @Autowired
-    EventService eventService = new EventServiceImpl();
+    IEventService iEventService = new EventServiceImpl();
 
     @Autowired
-    UserService userService = new UserServiceImpl();
+    IUserService iUserService = new UserServiceImpl();
 
     @RequestMapping(path = "/addEvent", method = RequestMethod.GET)
     public @ResponseBody ModelAndView addEventView() {
 
-        return new ModelAndView("user/addEvent");
+        return new ModelAndView("user/eventAdd");
 
     }
 
@@ -49,7 +47,7 @@ public class EventAddController {
                                                @RequestParam(name = "longitude") String longitude,
                                                @RequestParam(name = "latitude") String latitude) {
 
-        ModelAndView modelAndView = new ModelAndView("user/addEvent");
+        ModelAndView modelAndView = new ModelAndView("user/eventAdd");
 
         try {
 
@@ -76,15 +74,15 @@ public class EventAddController {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
-            UserModel userModel = userService.findUserByEmail(currentPrincipalName);
+            UserModel userModel = iUserService.findUserByEmail(currentPrincipalName);
 
             userModel.addEvent(eventModel);
 
-            if (eventService.findEventByName(name) != null) {
+            if (iEventService.findEventByName(name) != null) {
                 throw new Exception("Event with name: " + name + " already exists!");
             }
 
-            userService.updateUser(userModel);
+            iUserService.updateUser(userModel);
 
             modelAndView.addObject("eventAddSucces", "Event succesfully added!");
 

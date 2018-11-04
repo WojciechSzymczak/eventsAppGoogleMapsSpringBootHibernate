@@ -1,8 +1,8 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.interfaces;
 
 import com.events.eventsapp.model.RoleModel;
 
-public interface RoleService {
+public interface IRoleService {
 
     RoleModel findRoleByName(String roleName);
 

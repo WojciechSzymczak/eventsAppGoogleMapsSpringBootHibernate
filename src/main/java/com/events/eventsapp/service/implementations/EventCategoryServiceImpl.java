@@ -1,8 +1,10 @@
-package com.events.eventsapp.service;
+package com.events.eventsapp.service.implementations;
 
 import com.events.eventsapp.model.EventCategoryModel;
 import com.events.eventsapp.model.EventModel;
-import com.events.eventsapp.repositories.EventCategoryRepository;
+import com.events.eventsapp.repositories.IEventCategoryRepository;
+import com.events.eventsapp.service.interfaces.IEventCategoryService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -11,37 +13,37 @@ import java.util.List;
 import java.util.Set;
 
 @Service("eventCategoryService")
-public class EventCategoryServiceImpl implements EventCategoryService{
+public class EventCategoryServiceImpl implements IEventCategoryService {
 
     @Qualifier("eventCategoryRepository")
     @Autowired
-    EventCategoryRepository eventCategoryRepository;
+    IEventCategoryRepository iEventCategoryRepository;
 
     @Override
     public EventCategoryModel findEventCategoryModelByName(String name) {
 
-        return eventCategoryRepository.findByName(name);
+        return iEventCategoryRepository.findByName(name);
 
     }
 
     @Override
     public void saveEventCategoryModel(EventCategoryModel eventCategoryModel) {
 
-        eventCategoryRepository.save(eventCategoryModel);
+        iEventCategoryRepository.save(eventCategoryModel);
 
     }
 
     @Override
     public Set<EventCategoryModel> getEventCategoryModels(EventModel eventModel) {
 
-        return eventCategoryRepository.findEventCategoryModelsByEventModel(eventModel);
+        return iEventCategoryRepository.findEventCategoryModelsByEventModel(eventModel);
 
     }
 
     @Override
     public List<EventCategoryModel> findEventCategoryModels() {
 
-        return eventCategoryRepository.findEventCategoryModels();
+        return iEventCategoryRepository.findEventCategoryModels();
 
     }
 
