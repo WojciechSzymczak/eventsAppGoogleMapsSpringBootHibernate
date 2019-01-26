@@ -39,6 +39,9 @@ public class DatabaseFiller implements ApplicationRunner {
     @Autowired
     IEventCategoryService iEventCategoryService;
 
+    @Autowired
+    IRelationshipService iRelationshipService;
+
     @Value("${spring.datasource.password}")
     private String springDatasourcePassword;
 
@@ -46,7 +49,6 @@ public class DatabaseFiller implements ApplicationRunner {
      * Method fills database with user's roles and event's categories.
      */
     public void productionFill() {
-
         //Adding roles to database:
         RoleModel userRole = new RoleModel();
         RoleModel adminRole = new RoleModel();
@@ -78,18 +80,15 @@ public class DatabaseFiller implements ApplicationRunner {
             eventCategoryModel3.setName("Concert");
         }
 
-
         iEventCategoryService.saveEventCategoryModel(eventCategoryModel1);
         iEventCategoryService.saveEventCategoryModel(eventCategoryModel2);
         iEventCategoryService.saveEventCategoryModel(eventCategoryModel3);
-
     }
 
     /**
      * Method calls productionFill() method then populates database with example data.
      */
     public void testingFill() {
-
         productionFill();
 
         UserModel testAdminModel = new UserModel();
@@ -112,13 +111,13 @@ public class DatabaseFiller implements ApplicationRunner {
 
         eventModel1.setName("Admin's party.");
         eventModel1.setDescription("Admin LAN party.");
-        eventModel1.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-10-09", "02:03 PM"));
+        eventModel1.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-10-09", "02:03 PM"));
         eventModel1.setLatitude(51.76147975278799);
         eventModel1.setLongitude(19.46422304609382);
 
         eventModel2.setName("Admin's birthday.");
         eventModel2.setDescription("Admin will be 32.");
-        eventModel2.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-09-12", "11:00 AM"));
+        eventModel2.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-09-12", "11:00 AM"));
         eventModel2.setLatitude(51.76278799147975);
         eventModel2.setLongitude(19.44609382642230);
 
@@ -127,8 +126,6 @@ public class DatabaseFiller implements ApplicationRunner {
         adminEventsSet.add(eventModel2);
         testAdminModel.setEvents(adminEventsSet);
         iUserService.updateUser(testAdminModel);
-
-
 
         //Creating user's accounts:
         testUser1Model.setEmail("Nowak@wp.pl");
@@ -148,13 +145,13 @@ public class DatabaseFiller implements ApplicationRunner {
 
         eventModel3.setName("Nowak's party.");
         eventModel3.setDescription("Nowak will be drunk.");
-        eventModel3.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-12-01", "08:00 PM"));
+        eventModel3.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-12-01", "08:00 PM"));
         eventModel3.setLatitude(51.61479752787997);
         eventModel3.setLongitude(19.04609382464223);
 
         eventModel4.setName("Nowak's birthday party.");
         eventModel4.setDescription("Nowak turn's 42.");
-        eventModel4.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-08-24", "03:00 AM"));
+        eventModel4.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-08-24", "03:00 AM"));
         eventModel4.setLatitude(51.11279752787997);
         eventModel4.setLongitude(19.94609382464223);
 
@@ -170,13 +167,13 @@ public class DatabaseFiller implements ApplicationRunner {
 
         eventModel5.setName("Bogusz's party.");
         eventModel5.setDescription("Bogusz will have fun.");
-        eventModel5.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-08-30", "04:00 PM"));
+        eventModel5.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-08-30", "04:00 PM"));
         eventModel5.setLatitude(52.61479752787997);
         eventModel5.setLongitude(18.04609382464223);
 
         eventModel6.setName("Bogusz's vehicle purchase.");
         eventModel6.setDescription("Bogusz will buy a tank for Polish roads.");
-        eventModel6.setBeginningDate(DateAndTimeUtil.getTimestamp("2018-11-11", "10:00 PM"));
+        eventModel6.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-11-11", "10:00 PM"));
         eventModel6.setLatitude(51.79971127975278);
         eventModel6.setLongitude(19.46422394609382);
 
@@ -191,7 +188,7 @@ public class DatabaseFiller implements ApplicationRunner {
 
         testUser2Model.getUserDetailsModel().setFirstname("Janusz");
         testUser2Model.getUserDetailsModel().setLastname("Bogusz");
-        testUser2Model.getUserDetailsModel().setBirthdate(DateAndTimeUtil.getTimestamp(1981,2,3,12,30));
+        testUser2Model.getUserDetailsModel().setBirthdate(DateAndTimeUtil.getTimestamp(1981,2,3,0,0));
 
         TimeLinePostModel timeLinePostModel1 = new TimeLinePostModel();
         TimeLinePostModel timeLinePostModel2 = new TimeLinePostModel();
@@ -205,31 +202,22 @@ public class DatabaseFiller implements ApplicationRunner {
         timeLinePostModel2.setPublishedDate(new Timestamp(System.currentTimeMillis()));
         timeLinePostModelSet.add(timeLinePostModel1);
         timeLinePostModelSet.add(timeLinePostModel2);
-
-
         testUser2Model.setTimeLinePostModels(timeLinePostModelSet);
 
         iUserService.updateUser(testUser2Model);
 
-        //We need to reload our UserModel entity from database before udpating it again, otherwise exception will occur.
-//        testUser2Model = iUserService.findUserByEmail(testUser2Model.getEmail());
+        RelationshipModel relationshipModel1 = new RelationshipModel();
+        relationshipModel1.setAlphaUserModel(testUser1Model);
+        relationshipModel1.setBetaUserModel(testUser2Model);
+        relationshipModel1.setBlocked(false);
+        relationshipModel1.setFriend(false);
 
-        //Deleting user's time line posts(ALL):
-//        testUser2Model.setTimeLinePostModels(new HashSet<TimeLinePostModel>());
-//        iTimeLinePostService.deleteAllTimeLinePostsByUserModel(testUser2Model);
-//        iUserService.updateUser(testUser2Model);
-
-        //Deleting user and all data related to him from database.
-//        iUserService.deleteUserModelByEmail("Bogusz@wp.pl");
-
+        iRelationshipService.updateRelationship(relationshipModel1);
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-
         productionFill(); //use for production
-//        testingFill(); //use for developing
-
+//        testingFill(); //use for develop
     }
-
 }

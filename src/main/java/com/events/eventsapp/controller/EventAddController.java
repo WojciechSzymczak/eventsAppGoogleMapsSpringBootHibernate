@@ -74,7 +74,7 @@ public class EventAddController {
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String currentPrincipalName = authentication.getName();
-            UserModel userModel = iUserService.findUserByEmail(currentPrincipalName);
+            UserModel userModel = iUserService.findUserByName(currentPrincipalName);
 
             userModel.addEvent(eventModel);
 

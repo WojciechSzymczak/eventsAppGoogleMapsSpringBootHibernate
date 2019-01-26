@@ -7,21 +7,15 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
-
     <title>Events - main page</title>
-
-    <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="css/customcss/style1.css" rel="stylesheet">
+    <link rel="stylesheet" href="fonts/fontawesome-free-5.6.3-web/css/all.css">
 </head>
-
 <body>
 
     <%@include file="../jspf/userPanel.jspf"%>
     <%@include file="../jspf/navigationBar.jspf"%>
-
 
     <div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
 

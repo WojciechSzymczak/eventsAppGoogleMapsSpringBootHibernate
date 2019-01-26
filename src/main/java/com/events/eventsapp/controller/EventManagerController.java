@@ -32,7 +32,7 @@ public class EventManagerController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String principalName = auth.getName();
 
-        UserModel userModel = iUserService.findUserByEmail(principalName);
+        UserModel userModel = iUserService.findUserByName(principalName);
 
         modelAndView.addObject("userModel",userModel);
 
@@ -51,7 +51,7 @@ public class EventManagerController {
 
                 Authentication auth = SecurityContextHolder.getContext().getAuthentication();
                 String principalName = auth.getName();
-                UserModel userModel = iUserService.findUserByEmail(principalName);
+                UserModel userModel = iUserService.findUserByName(principalName);
 
                 Long parsedEventId = Long.parseLong(toDelEventId);
 

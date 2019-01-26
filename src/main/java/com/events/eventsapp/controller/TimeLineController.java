@@ -32,7 +32,7 @@ public class TimeLineController {
         if(userModel == null) {
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-            userModel = iUserService.findUserByEmail(auth.getName());
+            userModel = iUserService.findUserByName(auth.getName());
 
         }
 

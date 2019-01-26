@@ -7,18 +7,10 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
-
     <title>Events - manage events</title>
-
-    <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="css/customcss/style1.css" rel="stylesheet">
-
-    <!-- Font style for delete button -->
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="fonts/fontawesome-free-5.6.3-web/css/all.css">
 </head>
 
 <body>

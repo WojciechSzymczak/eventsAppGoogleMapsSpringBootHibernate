@@ -45,9 +45,15 @@ public class UserModel implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<TimeLinePostModel> timeLinePostModels;
 
-    public Long getId() {
-        return id;
-    }
+    //alphaRelationshipModels - these are the user's preferences towards other users.
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "alphaUserModel")
+    private Set<RelationshipModel> alphaRelationshipModels;
+
+    //betaRelationshipModels - these are the other's preferences towards the user.
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "betaUserModel")
+    private Set<RelationshipModel> betaRelationshipModels;
+
+    public Long getId() { return id; }
 
     public void setId(Long id) {
         this.id = id;
@@ -113,4 +119,19 @@ public class UserModel implements Serializable {
 
     public void setTimeLinePostModels(Set<TimeLinePostModel> timeLinePostModels) { this.timeLinePostModels = timeLinePostModels; }
 
+    public Set<RelationshipModel> getAlphaRelationshipModels() {
+        return alphaRelationshipModels;
+    }
+
+    public void setAlphaRelationshipModels(Set<RelationshipModel> alphaRelationshipModels) {
+        this.alphaRelationshipModels = alphaRelationshipModels;
+    }
+
+    public Set<RelationshipModel> getBetaRelationshipModels() {
+        return betaRelationshipModels;
+    }
+
+    public void setBetaRelationshipModels(Set<RelationshipModel> betaRelationshipModels) {
+        this.betaRelationshipModels = betaRelationshipModels;
+    }
 }
