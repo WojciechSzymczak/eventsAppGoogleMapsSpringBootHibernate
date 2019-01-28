@@ -84,7 +84,7 @@
                             <li>Start date: ${events.getBeginningDate().toString()}</li>
                             <li>Long: ${events.getLongitude()}</li>
                             <li>Lat: ${events.getLatitude()}</li>
-                            <li>User: ${events.getUsers().iterator().next().getName()}</li>
+                            <li><a href="/userDetailsView?name=${events.getUsers().iterator().next().getName()}">User: ${events.getUsers().iterator().next().getName()}</a></li>
                         </ul>
                         <form action="/event" method="get">
                             <input type="hidden" name="name" value="${events.getName()}">

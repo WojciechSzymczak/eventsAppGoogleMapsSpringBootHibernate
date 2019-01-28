@@ -30,19 +30,24 @@ public class UserDetailsViewController {
         if ( (userName == null || userName.trim().equals("")) ) {
             userModel = iUserService.findUserByName(principalName);
             modelAndView.addObject("edit", "true");
+            modelAndView.addObject("userModel",userModel);
         }
         else {
             userModel = iUserService.findUserByName(userName);
-        }
-
-        try {
-            if ( userModel == null ) {
-                throw new Exception("User \"" + userName + "\" not found.");
+            try {
+                if ( userModel == null ) {
+                    throw new Exception("User \"" + userName + "\" not found.");
+                }
+                modelAndView.addObject("userModel",userModel);
+                if (iUserService.areFriends(userModel.getName(), principalName)) {
+                    modelAndView.addObject("deleteFriend", "true");
+                } else if (!userModel.getName().equals(principalName)) {
+                    modelAndView.addObject("addFriend", "true");
+                }
             }
-            modelAndView.addObject("userModel",userModel);
-        }
-        catch (Exception e) {
-            modelAndView.addObject("errorMessage",e.getMessage());
+            catch (Exception e) {
+                modelAndView.addObject("errorMessage",e.getMessage());
+            }
         }
 
         return modelAndView;

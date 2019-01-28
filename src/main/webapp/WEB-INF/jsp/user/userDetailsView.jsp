@@ -34,6 +34,20 @@
                             <i class="fas fa-edit"></i>
                         </a>
                     </c:if>
+                    <c:if test="${requestScope.get('addFriend').equals('true')}">
+                        <form name="addFriendForm" action="/contactsAdd" method="post">
+                            <a class="btn btn-outline-success ml-5">Add friend
+                                <i class="fas fa-plus-square"></i>
+                            </a>
+                        </form>
+                    </c:if>
+                    <c:if test="${requestScope.get('deleteFriend').equals('true')}">
+                    <form name="deleteFriendForm" action="/contactsDelete" method="post">
+                        <a class="btn btn-outline-danger ml-5">Delete friend
+                            <i class="fas fa-minus-square"></i>
+                        </a>
+                    </form>
+                    </c:if>
                 </div>
             </div>
             <form>

@@ -1,9 +1,7 @@
 package com.events.eventsapp.service.implementations;
 
-import com.events.eventsapp.model.TimeLinePostModel;
-import com.events.eventsapp.model.UserDetailsModel;
-import com.events.eventsapp.model.RoleModel;
-import com.events.eventsapp.model.UserModel;
+import com.events.eventsapp.model.*;
+import com.events.eventsapp.repositories.IRelationshipRepository;
 import com.events.eventsapp.repositories.IRoleRepository;
 import com.events.eventsapp.repositories.IUserRepository;
 import com.events.eventsapp.service.interfaces.IUserService;
@@ -27,6 +25,10 @@ public class UserServiceImpl implements IUserService {
     @Qualifier("roleRepository")
     @Autowired
     private IRoleRepository iRoleRepository;
+
+    @Qualifier("relationshipRepository")
+    @Autowired
+    private IRelationshipRepository iRelationshipRepository;
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -118,5 +120,57 @@ public class UserServiceImpl implements IUserService {
     public List<TimeLinePostModel> getUserMainTimeLinePosts(UserModel userModel) {
         List<TimeLinePostModel> timeLinePostModelList = iUserRepository.getUserMainTimeLinePosts(userModel.getId());
         return timeLinePostModelList;
+    }
+
+    @Override
+    public void addContacts(UserModel userModel1, UserModel userModel2) {
+        //Loading relationship between users.
+        RelationshipModel relationshipModel = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel1, userModel2);
+        if (relationshipModel != null) {
+            relationshipModel.setFriend(true);
+            iRelationshipRepository.save(relationshipModel);
+        }
+        else {
+            RelationshipModel localRelationshipModel = new RelationshipModel();
+            localRelationshipModel.setFriend(true);
+            localRelationshipModel.setBlocked(false);
+            localRelationshipModel.setAlphaUserModel(userModel1);
+            localRelationshipModel.setBetaUserModel(userModel2);
+            iRelationshipRepository.save(localRelationshipModel);
+        }
+
+        relationshipModel = null;
+        relationshipModel = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel2, userModel1);
+        if (relationshipModel != null) {
+            relationshipModel.setFriend(true);
+            iRelationshipRepository.save(relationshipModel);
+        }
+        else {
+            RelationshipModel localRelationshipModel = new RelationshipModel();
+            localRelationshipModel.setFriend(true);
+            localRelationshipModel.setBlocked(false);
+            localRelationshipModel.setAlphaUserModel(userModel2);
+            localRelationshipModel.setBetaUserModel(userModel1);
+            iRelationshipRepository.save(localRelationshipModel);
+        }
+    }
+
+    @Override
+    public boolean areFriends(String userName, String principalName) {
+        UserModel userModel1 = iUserRepository.findByName(userName);
+        UserModel userModel2 = iUserRepository.findByName(principalName);
+
+        RelationshipModel relationshipModel1 = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel1, userModel2);
+        RelationshipModel relationshipModel2 = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel2, userModel1);
+
+        if (relationshipModel1 == null || relationshipModel2 == null) {
+            return false;
+        }
+        else if (!relationshipModel1.isFriend() || !relationshipModel2.isFriend()) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }
