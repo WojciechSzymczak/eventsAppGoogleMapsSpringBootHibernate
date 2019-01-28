@@ -27,6 +27,7 @@ public class TimeLineController {
     @RequestMapping(path = "/timeLine", method = RequestMethod.GET)
     public @ResponseBody ModelAndView timeLineGet(@RequestParam(name = "name", required = false, defaultValue = "") String userName) {
         ModelAndView modelAndView = new ModelAndView("user/timeLine");
+        modelAndView.addObject("actionPath", "/timeLine");
 
         UserModel userModel;
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -60,13 +61,14 @@ public class TimeLineController {
     }
 
     @RequestMapping(path = "/timeLine", method = RequestMethod.POST)
-    public @ResponseBody ModelAndView doPost(@RequestParam(name = "textArea", required = true) String content) {
+    public @ResponseBody ModelAndView doPost(@RequestParam(name = "actionPath", required = true) String actionPath,
+                                             @RequestParam(name = "textArea", required = true) String content) {
         ModelAndView modelAndView = new ModelAndView("user/timeLine");
         //only authenticated users can post on their time lines.
         UserModel userModel = iUserService.findUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
 
         try {
-            if( userModel == null ) {
+            if(userModel == null) {
                 throw new Exception("User not found or is not authenticated.");
             }
             TimeLinePostModel timeLinePostModel = new TimeLinePostModel();
@@ -84,14 +86,21 @@ public class TimeLineController {
             modelAndView.addObject("timeLinePosts", timeLinePostModelList);
             modelAndView.addObject("canPost", "true");
         }
-        catch ( Exception e ) {
+        catch (Exception e) {
             modelAndView.addObject("errorMessage", e.getMessage());
+        }
+
+        //if user published a post from main time line, he will
+        //remain on that line instead of being redirected to his own.
+        //TODO there is a better way to solve this problem.
+        if (actionPath.equals("/mainTimeLine")) {
+            return mainTimeLineGet(userModel.getName());
         }
 
         return modelAndView;
     }
 
-    private static List<TimeLinePostModel> getSortedPostsList(Set<TimeLinePostModel> timeLinePostModelSet) {
+    public static List<TimeLinePostModel> getSortedPostsList(Set<TimeLinePostModel> timeLinePostModelSet) {
         List <TimeLinePostModel> timeLinePostModelList = new LinkedList<TimeLinePostModel>();
 
         for ( TimeLinePostModel post : timeLinePostModelSet ) {
@@ -114,5 +123,30 @@ public class TimeLineController {
         });
 
         return  timeLinePostModelList;
+    }
+
+    @RequestMapping(path = "/mainTimeLine", method = RequestMethod.GET)
+    public @ResponseBody ModelAndView mainTimeLineGet(@RequestParam(name = "name", required = false, defaultValue = "") String userName) {
+        ModelAndView modelAndView = new ModelAndView("user/timeLine");
+        modelAndView.addObject("actionPath", "/mainTimeLine");
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        String principalName = authentication.getName();
+
+        UserModel userModel = iUserService.findUserByName(principalName);
+        List<TimeLinePostModel> timeLinePostModelList = new LinkedList<TimeLinePostModel>();
+
+        try {
+            timeLinePostModelList = iUserService.getUserMainTimeLinePosts(userModel);
+            modelAndView.addObject("timeLineTitle", "Main time line:");
+            modelAndView.addObject("canPost", "true");
+            modelAndView.addObject("timeLinePosts", timeLinePostModelList);
+        }
+        catch (Exception e) {
+            modelAndView.addObject("errorMessage", e.getMessage());
+        }
+
+        return modelAndView;
     }
 }

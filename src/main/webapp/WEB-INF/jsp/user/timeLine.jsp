@@ -39,6 +39,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12 justify-content-end d-flex">
+                                            <input type="hidden" name="actionPath" value="${requestScope.get("actionPath")}" />
                                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                             <button type="submit" class="btn btn-primary">Publish</button>
                                         </div>
