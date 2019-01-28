@@ -31,7 +31,8 @@
                     </a>
 
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/timeline">Your timeline</a>
+                        <a class="dropdown-item" href="/mainTimeLine">Main time line</a>
+                        <a class="dropdown-item" href="/timeLine">Your time line</a>
                     </div>
                 </li>
             </sec:authorize>

@@ -1,5 +1,6 @@
 package com.events.eventsapp.service.implementations;
 
+import com.events.eventsapp.model.TimeLinePostModel;
 import com.events.eventsapp.model.UserDetailsModel;
 import com.events.eventsapp.model.RoleModel;
 import com.events.eventsapp.model.UserModel;
@@ -14,9 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Optional;
+import java.util.*;
 
 @Service("userService")
 public class UserServiceImpl implements IUserService {
@@ -115,4 +114,9 @@ public class UserServiceImpl implements IUserService {
 
     }
 
+    @Override
+    public List<TimeLinePostModel> getUserMainTimeLinePosts(UserModel userModel) {
+        List<TimeLinePostModel> timeLinePostModelList = iUserRepository.getUserMainTimeLinePosts(userModel.getId());
+        return timeLinePostModelList;
+    }
 }

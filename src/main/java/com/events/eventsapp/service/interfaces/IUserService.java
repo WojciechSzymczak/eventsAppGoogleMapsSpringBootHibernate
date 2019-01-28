@@ -1,7 +1,9 @@
 package com.events.eventsapp.service.interfaces;
 
+import com.events.eventsapp.model.TimeLinePostModel;
 import com.events.eventsapp.model.UserModel;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IUserService {
@@ -13,5 +15,5 @@ public interface IUserService {
     public void saveJustRegisteredUser(UserModel user);
     public void updateUser(UserModel user);
     void deleteUserModelByEmail(String email);
-
+    List<TimeLinePostModel> getUserMainTimeLinePosts(UserModel userModel);
 }
