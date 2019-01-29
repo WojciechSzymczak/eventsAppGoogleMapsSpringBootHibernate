@@ -16,6 +16,7 @@ public interface IUserService {
     public void updateUser(UserModel user);
     void deleteUserModelByEmail(String email);
     List<TimeLinePostModel> getUserMainTimeLinePosts(UserModel userModel);
-    void addContacts(UserModel userModel1, UserModel userModel2);
     boolean areFriends(String name, String principalName);
+    void addContacts(UserModel userModel1, UserModel userModel2);
+    void deleteContacts(UserModel userModel1, UserModel userModel2);
 }

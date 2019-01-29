@@ -52,4 +52,50 @@ public class UserDetailsViewController {
 
         return modelAndView;
     }
+
+    @RequestMapping(path = "/contactsAdd", method = RequestMethod.POST)
+    public @ResponseBody  ModelAndView doPostAddFriend(@RequestParam(name = "userName", required = false) String userName) {
+        ModelAndView modelAndView = new ModelAndView("user/userDetailsView");
+
+        UserModel principalUserModel = null;
+        UserModel userModel = null;
+
+        if (userName != null && !userName.trim().equals("")) {
+            userModel = iUserService.findUserByName(userName);
+            principalUserModel = iUserService.findUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+
+        if(userModel == null || principalUserModel == null) {
+            modelAndView.addObject("errorMessage", "Add friend operation failed.");
+        }
+        else {
+            iUserService.addContacts(userModel, principalUserModel);
+            return doGet(userModel.getName()).addObject("successMessage", "User \"" + userModel.getName() + "\" added to contacts.");
+        }
+
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/contactsDelete", method = RequestMethod.POST)
+    public @ResponseBody  ModelAndView doPostDeleteFriend(@RequestParam(name = "userName", required = false) String userName) {
+        ModelAndView modelAndView = new ModelAndView("user/userDetailsView");
+
+        UserModel principalUserModel = null;
+        UserModel userModel = null;
+
+        if (userName != null && !userName.trim().equals("")) {
+            userModel = iUserService.findUserByName(userName);
+            principalUserModel = iUserService.findUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        }
+
+        if(userModel == null || principalUserModel == null) {
+            modelAndView.addObject("errorMessage", "Delete friend operation failed.");
+        }
+        else {
+            iUserService.deleteContacts(userModel, principalUserModel);
+            return doGet(userModel.getName()).addObject("successMessage", "User \"" + userModel.getName() + "\" deleted from contacts.");
+        }
+
+        return modelAndView;
+    }
 }

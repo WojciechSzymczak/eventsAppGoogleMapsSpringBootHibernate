@@ -35,17 +35,21 @@
                         </a>
                     </c:if>
                     <c:if test="${requestScope.get('addFriend').equals('true')}">
-                        <form name="addFriendForm" action="/contactsAdd" method="post">
-                            <a class="btn btn-outline-success ml-5">Add friend
+                        <form action="/contactsAdd" method="post">
+                            <input type="hidden" name="userName" value="${userModel.getName()}">
+                            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                            <button type="submit" class="btn btn-outline-success ml-5">Add friend
                                 <i class="fas fa-plus-square"></i>
-                            </a>
+                            </button>
                         </form>
                     </c:if>
                     <c:if test="${requestScope.get('deleteFriend').equals('true')}">
-                    <form name="deleteFriendForm" action="/contactsDelete" method="post">
-                        <a class="btn btn-outline-danger ml-5">Delete friend
+                    <form action="/contactsDelete" method="post">
+                        <input type="hidden" name="userName" value="${userModel.getName()}">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                        <button type="submit" class="btn btn-outline-danger ml-5">Delete friend
                             <i class="fas fa-minus-square"></i>
-                        </a>
+                        </button>
                     </form>
                     </c:if>
                 </div>

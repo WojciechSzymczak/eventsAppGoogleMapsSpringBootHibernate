@@ -123,6 +123,25 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    public boolean areFriends(String userName, String principalName) {
+        UserModel userModel1 = iUserRepository.findByName(userName);
+        UserModel userModel2 = iUserRepository.findByName(principalName);
+
+        RelationshipModel relationshipModel1 = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel1, userModel2);
+        RelationshipModel relationshipModel2 = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel2, userModel1);
+
+        if (relationshipModel1 == null || relationshipModel2 == null) {
+            return false;
+        }
+        else if (!relationshipModel1.isFriend() || !relationshipModel2.isFriend()) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    @Override
     public void addContacts(UserModel userModel1, UserModel userModel2) {
         //Loading relationship between users.
         RelationshipModel relationshipModel = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel1, userModel2);
@@ -156,21 +175,35 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public boolean areFriends(String userName, String principalName) {
-        UserModel userModel1 = iUserRepository.findByName(userName);
-        UserModel userModel2 = iUserRepository.findByName(principalName);
-
-        RelationshipModel relationshipModel1 = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel1, userModel2);
-        RelationshipModel relationshipModel2 = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel2, userModel1);
-
-        if (relationshipModel1 == null || relationshipModel2 == null) {
-            return false;
-        }
-        else if (!relationshipModel1.isFriend() || !relationshipModel2.isFriend()) {
-            return false;
+    public void deleteContacts(UserModel userModel1, UserModel userModel2) {
+        //Loading relationship between users.
+        RelationshipModel relationshipModel = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel1, userModel2);
+        if (relationshipModel != null) {
+            relationshipModel.setFriend(false);
+            iRelationshipRepository.save(relationshipModel);
         }
         else {
-            return true;
+            RelationshipModel localRelationshipModel = new RelationshipModel();
+            localRelationshipModel.setFriend(false);
+            localRelationshipModel.setBlocked(false);
+            localRelationshipModel.setAlphaUserModel(userModel1);
+            localRelationshipModel.setBetaUserModel(userModel2);
+            iRelationshipRepository.save(localRelationshipModel);
+        }
+
+        relationshipModel = null;
+        relationshipModel = iRelationshipRepository.findByAlphaUserModelAndBetaUserModel(userModel2, userModel1);
+        if (relationshipModel != null) {
+            relationshipModel.setFriend(false);
+            iRelationshipRepository.save(relationshipModel);
+        }
+        else {
+            RelationshipModel localRelationshipModel = new RelationshipModel();
+            localRelationshipModel.setFriend(false);
+            localRelationshipModel.setBlocked(false);
+            localRelationshipModel.setAlphaUserModel(userModel2);
+            localRelationshipModel.setBetaUserModel(userModel1);
+            iRelationshipRepository.save(localRelationshipModel);
         }
     }
 }
