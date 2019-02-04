@@ -1,3 +1,4 @@
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -16,91 +17,65 @@
     <%@include file="../../jspf/userPanel.jspf"%>
     <%@include file="../../jspf/navigationBar.jspf"%>
 
-    <%--<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">--%>
+    <div class="container">
 
-        <%--<div id="logout"></div>--%>
-        <%--<c:if test='${requestScope.get("message") != null}'>--%>
-            <%--<div class="btn-success btn-lg mt-3 mb-3">${requestScope.get("message")}</div>--%>
-        <%--</c:if>--%>
+        <c:if test='${requestScope.get("successMessage") != null}'>
+            <div class="btn-success btn-lg mt-3 mb-3">${requestScope.get("successMessage")}</div>
+        </c:if>
 
-        <%--<h1 class="display-4">Find or create event!</h1>--%>
+        <c:if test='${requestScope.get("errorMessage") != null}'>
+            <div class="btn-danger btn-lg mt-3 mb-3">${requestScope.get("errorMessage")}</div>
+        </c:if>
 
-        <%--<br>--%>
+        <c:set var="users" value="${requestScope.get('contactsList')}"/>
+        <%--We need a variable to check if current contact is odd, if so we are going to create new div and place it there.--%>
+        <%--In result, contacts will be displayed in 2 columns.--%>
+        <c:set var="count" value="1"/>
 
-        <%--<form action="/index" method="get">--%>
-            <%--<div id="custom-search-input">--%>
-                <%--<div class="input-group">--%>
-                    <%--<input type="text" name="name" class="form-control input-lg" placeholder="Event name" />--%>
-                    <%--<span class="input-group-btn">--%>
-                                <%--<button class="btn btn-primary btn-lg" type="submit">Search</button>--%>
-                        <%--</span>--%>
-                <%--</div>--%>
-            <%--</div>--%>
+        <div class="py-5">
+            <div class="container">
+                <div class="row">
+                    <c:forEach var="user" items="${users}">
+                        <c:if test="${count%2 != 0}">
+                            <div class="col-lg-12 d-flex mb-5">
+                        </c:if>
+                                <div class="media w-50 ml-3">
+                                    <a class="pull-left" href="/userDetailsView?name=${user.getName()}">
+                                        <img class="media-object dp rounded-circle" src="images/user_icon.png">
+                                    </a>
+                                    <div class="media-body ml-3">
+                                        <h4 class="media-heading">${user.getName()}</h4>
+                                        <hr style="margin:8px auto">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <span class="label label-default">Contact/Friend</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <form action="/contactsViewDelete" method="post">
+                                                    <input type="hidden" name="userName" value="${user.getName()}">
+                                                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                                    <button type="submit" class="btn btn-outline-danger">Delete friend<i class="fas fa-minus-square ml-1"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        <c:if test="${count%2 == 0}">
+                            </div>
+                        </c:if>
+                        <c:set var="count" value="${count = count + 1}"/>
+                    </c:forEach>
+                </div>
+            </div>
+        </div>
 
-            <%--<h4 class="m-3" align="left">Sort:</h4>--%>
+        <c:if test="${fn:length(requestScope.get('contactsList')) == 0}">
+            <h2 class="text-center"> Sorry, no results...</h2>
+        </c:if>
 
-            <%--<select class="d-inline form-control col-4" name="sortMode">--%>
-                <%--<option value="nameAsc">By name ascending</option>--%>
-                <%--<option value="nameDesc">By name descending</option>--%>
-                <%--<option value="timeAsc">By beginning time: soonest first</option>--%>
-                <%--<option value="timeDesc">By beginning time: latest first</option>--%>
-            <%--</select>--%>
+    </div>
 
-            <%--<select class="d-inline form-control col-4" name="eventCategory">--%>
-                <%--<option value="everycategory">Every category</option>--%>
-                <%--<option value="nocategory">No category only</option>--%>
-                <%--<c:forEach var="categories" items="${categories}">--%>
-                    <%--<option value="${categories.name}">${categories.name}</option>--%>
-                <%--</c:forEach>--%>
-            <%--</select>--%>
-
-        <%--</form>--%>
-
-        <%--<br><br>--%>
-
-        <%--<p class="lead">Example events:</p>--%>
-
-    <%--</div>--%>
-
-    <%--<div class="container">--%>
-
-        <%--<div class="card-deck mb-3 text-center">--%>
-            <%--<c:forEach var="events" items="${requestScope.get('events')}">--%>
-                <%--<div class="card mb-4 box-shadow">--%>
-                    <%--<div class="card-header">--%>
-                        <%--<h4 class="my-0 font-weight-normal">${events.getName()}</h4>--%>
-                    <%--</div>--%>
-                    <%--<div class="card-body">--%>
-                        <%--<ul class="list-unstyled mt-3 mb-4">--%>
-                                <%--&lt;%&ndash;If event has a category, it's name will be listed.&ndash;%&gt;--%>
-                            <%--<c:if test="${events.getEventCategoryModels().size() > 0}">--%>
-                                <%--<li>Category: ${events.getEventCategoryModels().iterator().next().getName()}</li>--%>
-                            <%--</c:if>--%>
-                                <%--&lt;%&ndash;If event has no category, ,,none'' will appear. &ndash;%&gt;--%>
-                            <%--<c:if test="${events.getEventCategoryModels().size() == 0 || events.getEventCategoryModels() == null}">--%>
-                                <%--<li>Category: none</li>--%>
-                            <%--</c:if>--%>
-                            <%--<li>Start date: ${events.getBeginningDate().toString()}</li>--%>
-                            <%--<li>Long: ${events.getLongitude()}</li>--%>
-                            <%--<li>Lat: ${events.getLatitude()}</li>--%>
-                            <%--<li>User: ${events.getUsers().iterator().next().getName()}</li>--%>
-                        <%--</ul>--%>
-                        <%--<form action="/event" method="get">--%>
-                            <%--<input type="hidden" name="name" value="${events.getName()}">--%>
-                            <%--<button type="submit" class="btn btn-lg btn-block btn-primary">Know more</button>--%>
-                        <%--</form>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</c:forEach>--%>
-        <%--</div>--%>
-
-        <%--<c:if test="${fn:length(requestScope.get('events')) == 0}">--%>
-            <%--<h2 class="text-center"> Sorry, no results...</h2>--%>
-        <%--</c:if>--%>
-
-        <%--<%@include file="../../jspf/footer.jspf"%>--%>
-
-    <%--</div>--%>
+    <%@include file="../../jspf/footer.jspf"%>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

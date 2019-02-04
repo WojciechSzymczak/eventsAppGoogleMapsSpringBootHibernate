@@ -56,3 +56,15 @@ html {
     width: 100% !important;
     height: 100% !important;
 }
+
+.dp
+{
+    border:10px solid #eee;
+    width: 100px;
+    height:100px;
+}
+
+.dp:hover
+{
+    border:2px solid #eee;
+}

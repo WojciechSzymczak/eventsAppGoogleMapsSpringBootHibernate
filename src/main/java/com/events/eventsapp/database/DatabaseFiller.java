@@ -213,6 +213,8 @@ public class DatabaseFiller implements ApplicationRunner {
         relationshipModel1.setFriend(false);
 
         iRelationshipService.updateRelationship(relationshipModel1);
+
+        iUserService.addContacts(testAdminModel, testUser1Model);
     }
 
     @Override

@@ -52,6 +52,20 @@ public class EventModel implements Serializable {
         return name;
     }
 
+    /**
+     * Method truncates event name and adds ,,...'' to the end if it's length exceeds count parameter value, otherwise
+     * it leaves event name as it is.
+     *
+     * @param count how many characters are to be shown.
+     * @return
+     */
+    public String getTruncatedName(int count) {
+        if (name.length() < count) {
+            return name;
+        }
+        return name.substring(0,count) + "...";
+    }
+
     public void setName(String name) {
         this.name = name;
     }
