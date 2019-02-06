@@ -20,6 +20,10 @@
 
     <div class="container">
 
+        <c:if test='${requestScope.get("errorMessage") != null}'>
+            <div class="btn-danger btn-lg mt-5 mb-2">${requestScope.get("errorMessage")}</div>
+        </c:if>
+
         <c:if test="${requestScope.get('timeLineTitle') != null}">
 
             <h2 class="mt-4 mb-4 text-center">${requestScope.get('timeLineTitle')}</h2>
@@ -58,7 +62,20 @@
                         <div class="row">
                             <div class="col-md-12 mb-4">
                                 <div class="card">
-                                    <div class="card-header"> ${posts.getUser().getName()} posted on ${posts.getPublishedDate().toLocalDateTime()}:</div>
+                                    <div class="card-header justify-content-between d-flex"> ${posts.getUser().getName()} posted on ${posts.getPublishedDate().toString()}:
+                                        <c:if test="${posts.getCanDelete() == true}">
+                                            <ul class="nav nav-tabs card-header-tabs m-0">
+                                                <li class="nav-item">
+                                                    <form action="${requestScope.get("deleteActionPath")}" method="post">
+                                                        <input type="hidden" name="actionPath" value="${requestScope.get("actionPath")}" />
+                                                        <input type="hidden" name="postId" value="${posts.getId().toString()}">
+                                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                                                        <button type="submit" class="btn btn-outline-danger">Delete<i class="fas fa-minus-square ml-1"></i></button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </c:if>
+                                    </div>
                                     <div class="card-body">
                                         <h4>${posts.getText()}</h4>
                                     </div>
@@ -73,10 +90,6 @@
                 <h2 class="text-center"> No posts yet!</h2>
             </c:if>
 
-        </c:if>
-
-        <c:if test='${requestScope.get("errorMessage") != null}'>
-            <div class="btn-danger btn-lg mt-5 mb-2">${requestScope.get("errorMessage")}</div>
         </c:if>
 
     </div>

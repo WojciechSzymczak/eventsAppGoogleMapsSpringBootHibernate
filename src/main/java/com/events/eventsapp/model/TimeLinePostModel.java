@@ -23,6 +23,13 @@ public class TimeLinePostModel implements Serializable {
     @JoinColumn(name = "user_id", nullable = false)
     private UserModel user;
 
+    /**
+     * canDelete is information for the view, if there should be a ,,delete'' button shown near the user's post.
+     * This is needed to allow administrators to delete other users posts.
+     */
+    @Transient
+    private Boolean canDelete;
+
     public Long getId() { return id; }
 
     public void setId(Long id) { this.id = id; }
@@ -35,12 +42,11 @@ public class TimeLinePostModel implements Serializable {
 
     public void setPublishedDate(Timestamp publishedDate) { this.publishedDate = publishedDate; }
 
-    public UserModel getUser() {
-        return user;
-    }
+    public UserModel getUser() { return user; }
 
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
+    public void setUser(UserModel user) { this.user = user; }
 
+    public Boolean getCanDelete() { return canDelete; }
+
+    public void setCanDelete(Boolean canDelete) { this.canDelete = canDelete; }
 }

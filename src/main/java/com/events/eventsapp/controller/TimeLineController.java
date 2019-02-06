@@ -2,6 +2,7 @@ package com.events.eventsapp.controller;
 
 import com.events.eventsapp.model.TimeLinePostModel;
 import com.events.eventsapp.model.UserModel;
+import com.events.eventsapp.service.interfaces.ITimeLinePostService;
 import com.events.eventsapp.service.interfaces.IUserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,16 @@ public class TimeLineController {
     @Autowired
     IUserService iUserService;
 
+    @Autowired
+    ITimeLinePostService iTimeLinePostService;
+
     @RequestMapping(path = "/timeLine", method = RequestMethod.GET)
     public @ResponseBody ModelAndView timeLineGet(@RequestParam(name = "name", required = false, defaultValue = "") String userName) {
         ModelAndView modelAndView = new ModelAndView("user/timeLine");
         modelAndView.addObject("actionPath", "/timeLine");
+        modelAndView.addObject("deleteActionPath", "/timeLinePostDelete");
 
-        UserModel userModel;
+        UserModel userModel, principalUser;
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         String principalName = authentication.getName();
@@ -40,8 +45,9 @@ public class TimeLineController {
                 userModel = iUserService.findUserByName(principalName);
                 modelAndView.addObject("canPost", "true");
                 modelAndView.addObject("timeLineTitle", userModel.getName() + "'s time line:");
-                timeLinePostModelList = getSortedPostsList(userModel.getTimeLinePostModels());
+                timeLinePostModelList = makePostsEditable(getSortedPostsList(userModel.getTimeLinePostModels()));
             } else {
+                principalUser = iUserService.findUserByName(principalName);
                 userModel = iUserService.findUserByName(userName);
                 if (userModel == null) {
                     throw new Exception("User \"" + userName + "\" not found.");
@@ -49,6 +55,9 @@ public class TimeLineController {
                 modelAndView.addObject("canPost", "false");
                 modelAndView.addObject("timeLineTitle", userModel.getName() + "'s time line:");
                 timeLinePostModelList = getSortedPostsList(userModel.getTimeLinePostModels());
+                if (principalUser.isInRole("ADMIN")) {
+                    timeLinePostModelList = makePostsEditable(timeLinePostModelList);
+                }
             }
         }
         catch ( Exception e ) {
@@ -66,6 +75,7 @@ public class TimeLineController {
         ModelAndView modelAndView = new ModelAndView("user/timeLine");
         //only authenticated users can post on their time lines.
         UserModel userModel = iUserService.findUserByName(SecurityContextHolder.getContext().getAuthentication().getName());
+        modelAndView.addObject("deleteActionPath", "timeLinePostDelete");
 
         try {
             if(userModel == null) {
@@ -81,6 +91,7 @@ public class TimeLineController {
 
             Set <TimeLinePostModel> timeLinePostModelSet = iUserService.findUserByName(SecurityContextHolder.getContext().getAuthentication().getName()).getTimeLinePostModels();
             List<TimeLinePostModel> timeLinePostModelList = getSortedPostsList(timeLinePostModelSet);
+            makePostsEditable(timeLinePostModelList);
 
             modelAndView.addObject("timeLineTitle",userModel.getName() + "'s time line:");
             modelAndView.addObject("timeLinePosts", timeLinePostModelList);
@@ -94,7 +105,7 @@ public class TimeLineController {
         //remain on that line instead of being redirected to his own.
         //TODO there is a better way to solve this problem.
         if (actionPath.equals("/mainTimeLine")) {
-            return mainTimeLineGet(userModel.getName());
+            return mainTimeLineGet(userModel.getName()).addObject("deleteActionPath", "/mainTimeLinePostDelete");
         }
 
         return modelAndView;
@@ -129,6 +140,7 @@ public class TimeLineController {
     public @ResponseBody ModelAndView mainTimeLineGet(@RequestParam(name = "name", required = false, defaultValue = "") String userName) {
         ModelAndView modelAndView = new ModelAndView("user/timeLine");
         modelAndView.addObject("actionPath", "/mainTimeLine");
+        modelAndView.addObject("deleteActionPath", "/mainTimeLinePostDelete");
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
@@ -139,6 +151,12 @@ public class TimeLineController {
 
         try {
             timeLinePostModelList = iUserService.getUserMainTimeLinePosts(userModel);
+            if (userModel.isInRole("ADMIN")) {
+                timeLinePostModelList = makePostsEditable(timeLinePostModelList);
+            }
+            else {
+                makeUserPostsEditable(timeLinePostModelList, userModel);
+            }
             modelAndView.addObject("timeLineTitle", "Main time line:");
             modelAndView.addObject("canPost", "true");
             modelAndView.addObject("timeLinePosts", timeLinePostModelList);
@@ -148,5 +166,98 @@ public class TimeLineController {
         }
 
         return modelAndView;
+    }
+
+    private List<TimeLinePostModel> makePostsEditable(List<TimeLinePostModel> sortedPostsList) {
+        for (TimeLinePostModel t : sortedPostsList) {
+            t.setCanDelete(true);
+        }
+        return sortedPostsList;
+    }
+
+    private void makeUserPostsEditable(List<TimeLinePostModel> timeLinePostModelList, UserModel userModel) {
+        for (TimeLinePostModel t : timeLinePostModelList) {
+            if (t.getUser().getName().equals(userModel.getName())) {
+                t.setCanDelete(true);
+            }
+        }
+    }
+
+    @RequestMapping(path = "/mainTimeLinePostDelete", method = RequestMethod.POST)
+    public @ResponseBody ModelAndView mainTimeLineDeletePost(
+            @RequestParam(name = "postId", required = false) String postId ) {
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        String principalName = authentication.getName();
+
+        UserModel principalModel = iUserService.findUserByName(principalName);
+
+        try {
+            if(postId == null || postId.trim().equals("")) {
+                throw new Exception("Wrong post id: \"" + postId + "\"");
+            }
+
+            Long LPostId = Long.parseLong(postId);
+            TimeLinePostModel timeLinePostModel = iTimeLinePostService.getTimeLinePostModelById(LPostId);
+
+            if(timeLinePostModel==null) {
+                throw new Exception("No post with id: \"" + LPostId + "\" found.");
+            }
+
+            if (principalModel.isInRole(UserModel.USER_ROLE_ADMIN)) {
+                iTimeLinePostService.deleteTimeLinePostByModel(timeLinePostModel);
+                return mainTimeLineGet(principalName).addObject("successMessage", "ADMIN: Post was successfully deleted.");
+            }
+            else if (timeLinePostModel.getUser().getName().equals(principalName)) {
+                iTimeLinePostService.deleteTimeLinePostByModel(timeLinePostModel);
+                return mainTimeLineGet(principalName).addObject("successMessage", "Post was successfully deleted.");
+            }
+            else {
+                return mainTimeLineGet(principalName).addObject("errorMessage", "Post cannot be deleted.");
+            }
+        }
+        catch (Exception e) {
+            return mainTimeLineGet(principalName).addObject("errorMessage", e.getMessage());
+        }
+    }
+
+    @RequestMapping(path = "/timeLinePostDelete", method = RequestMethod.POST)
+    public @ResponseBody ModelAndView timeLineDeletePost(
+            @RequestParam(name = "postId", required = false) String postId ) {
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        String principalName = authentication.getName();
+
+        UserModel principalModel = iUserService.findUserByName(principalName);
+
+        try {
+            if(postId == null || postId.trim().equals("")) {
+                throw new Exception("Wrong post id: \"" + postId + "\"");
+            }
+
+            Long LPostId = Long.parseLong(postId);
+            TimeLinePostModel timeLinePostModel = iTimeLinePostService.getTimeLinePostModelById(LPostId);
+
+            if(timeLinePostModel==null) {
+                throw new Exception("No post with id: \"" + LPostId + "\" found.");
+            }
+
+            if (principalModel.isInRole(UserModel.USER_ROLE_ADMIN)) {
+                iTimeLinePostService.deleteTimeLinePostByModel(timeLinePostModel);
+                return timeLineGet(principalName).addObject("successMessage", "ADMIN: Post was successfully deleted.");
+            }
+            else if (timeLinePostModel.getUser().getName().equals(principalName)) {
+                iTimeLinePostService.deleteTimeLinePostByModel(timeLinePostModel);
+                return timeLineGet(principalName).addObject("successMessage", "Post was successfully deleted.");
+            }
+            else {
+                return timeLineGet(principalName).addObject("errorMessage", "Post cannot be deleted.");
+            }
+        }
+        catch (Exception e) {
+            return timeLineGet(principalName).addObject("errorMessage", e.getMessage());
+        }
     }
 }

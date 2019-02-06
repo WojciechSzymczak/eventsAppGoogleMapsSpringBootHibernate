@@ -10,6 +10,8 @@ import java.util.Set;
 @Table(name = "users")
 public class UserModel implements Serializable {
 
+    public final static String USER_ROLE_ADMIN = "ADMIN";
+
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name="user_id", nullable=false, unique = true)
@@ -133,5 +135,14 @@ public class UserModel implements Serializable {
 
     public void setBetaRelationshipModels(Set<RelationshipModel> betaRelationshipModels) {
         this.betaRelationshipModels = betaRelationshipModels;
+    }
+
+    public boolean isInRole(String role) {
+        for (RoleModel r : roles) {
+            if (r.getRole().equals(role)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
