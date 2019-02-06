@@ -15,5 +15,4 @@ public interface IMessageRepository extends JpaRepository<MessageModel, Long> {
     Set<MessageModel> findAllBySenderAndRecipient(UserModel sender, UserModel recipient);
     Set<MessageModel> findAllByRecipient(UserModel recipient);
     Set<MessageModel> findAllBySender(UserModel sender);
-    Set<MessageModel> findAllBySenderOrRecipient(UserModel sender, UserModel recipient);
 }

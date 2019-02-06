@@ -99,7 +99,7 @@ public class DatabaseFiller implements ApplicationRunner {
         UserModel testUser2Model = new UserModel();
 
         //Creating admin account:
-        testAdminModel.setEmail("Kowalski@wp.pl");
+        testAdminModel.setEmail("Kowalski@email.com");
         testAdminModel.setPassword("haslo123");
         testAdminModel.setName("kowal");
         iUserService.saveJustRegisteredUser(testAdminModel);
@@ -131,12 +131,12 @@ public class DatabaseFiller implements ApplicationRunner {
         iUserService.updateUser(testAdminModel);
 
         //Creating user's accounts:
-        testUser1Model.setEmail("Nowak@wp.pl");
+        testUser1Model.setEmail("Nowak@email.com");
         testUser1Model.setPassword("haslo123");
         testUser1Model.setName("nowak");
         iUserService.saveJustRegisteredUser(testUser1Model);
 
-        testUser2Model.setEmail("Bogusz@wp.pl");
+        testUser2Model.setEmail("Bogusz@email.com");
         testUser2Model.setPassword("haslo123");
         testUser2Model.setName("bogusz");
         iUserService.saveJustRegisteredUser(testUser2Model);
@@ -174,6 +174,10 @@ public class DatabaseFiller implements ApplicationRunner {
         eventModel5.setLatitude(52.61479752787997);
         eventModel5.setLongitude(18.04609382464223);
 
+        //Adding category to event:
+        EventCategoryModel eventCategoryModel1 = iEventCategoryService.findEventCategoryModelByName("Parties & social life");
+        eventModel5.addEventCategoryModel(eventCategoryModel1);
+
         eventModel6.setName("Bogusz's vehicle purchase.");
         eventModel6.setDescription("Bogusz will buy a tank for Polish roads.");
         eventModel6.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-11-11", "10:00 PM"));
@@ -181,8 +185,8 @@ public class DatabaseFiller implements ApplicationRunner {
         eventModel6.setLongitude(19.46422394609382);
 
         //Adding category to event:
-        EventCategoryModel eventCategoryModel1 = iEventCategoryService.findEventCategoryModelByName("Automotive");
-        eventModel6.addEventCategoryModel(eventCategoryModel1);
+        EventCategoryModel eventCategoryModel2 = iEventCategoryService.findEventCategoryModelByName("Automotive");
+        eventModel6.addEventCategoryModel(eventCategoryModel2);
 
         Set <EventModel> user2EventsSet = new HashSet<EventModel>();
         user2EventsSet.add(eventModel5);

@@ -27,6 +27,9 @@ public class MessageModel implements Serializable {
     @JoinColumn(name = "recipient_id", nullable = false)
     private UserModel recipient;
 
+    @Transient
+    private Boolean isOwner;
+
     public Long getId() {
         return id;
     }
@@ -65,5 +68,13 @@ public class MessageModel implements Serializable {
 
     public void setRecipient(UserModel recipient) {
         this.recipient = recipient;
+    }
+
+    public Boolean getOwner() {
+        return isOwner;
+    }
+
+    public void setOwner(Boolean owner) {
+        isOwner = owner;
     }
 }

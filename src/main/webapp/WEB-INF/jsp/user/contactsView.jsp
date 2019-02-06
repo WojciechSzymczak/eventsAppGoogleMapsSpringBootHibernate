@@ -54,15 +54,23 @@
                                                 <form action="/contactsViewDelete" method="post">
                                                     <input type="hidden" name="userName" value="${user.getName()}">
                                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
-                                                    <button type="submit" class="btn btn-outline-danger">Delete friend<i class="fas fa-minus-square ml-1"></i></button>
+                                                    <button type="submit" class="btn btn-outline-danger w-100 mb-1">
+                                                        Delete friend<i class="fas fa-minus-square ml-1"></i>
+                                                    </button>
+                                                </form>
+                                                <form action="/messageView" method="get">
+                                                    <input type="hidden" name="name" value="${user.getName()}">
+                                                    <button type="submit" class="btn btn-outline-primary w-100 mb-1">
+                                                        Messages<i class="far fa-envelope ml-1"></i>
+                                                    </button>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                        <c:if test="${count%2 == 0}">
-                            </div>
-                        </c:if>
+                    <c:if test="${count%2 == 0}">
+                        </div>
+                    </c:if>
                         <c:set var="count" value="${count = count + 1}"/>
                     </c:forEach>
                 </div>

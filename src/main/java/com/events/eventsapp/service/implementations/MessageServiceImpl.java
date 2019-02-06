@@ -18,8 +18,8 @@ public class MessageServiceImpl implements IMessageService {
     IMessageRepository iMessageRepository;
 
     @Override
-    public Set<MessageModel> findMessagesBySenderOrRecipient(UserModel sender, UserModel recipient) {
-        return iMessageRepository.findAllBySenderOrRecipient(sender, recipient);
+    public Set<MessageModel> findMessagesBySenderAndRecipient(UserModel sender, UserModel recipient) {
+        return iMessageRepository.findAllBySenderAndRecipient(sender, recipient);
     }
 
     @Override

@@ -26,12 +26,7 @@
     </div>
             <div class="d-flex flex-row-reverse">
                 <div class="p-2">
-                    <a class="btn btn-outline-primary mr-3" href="#">Messages
-                        <i class="far fa-envelope"></i>
-                    </a>
-                </div>
-                <div class="p-2">
-                    <a class="btn btn-outline-primary" href="/contactsView">Contacts
+                    <a class="btn btn-outline-primary mr-3" href="/contactsView">Contacts
                         <i class="far fa-address-book ml-2"></i>
                     </a>
                 </div>
