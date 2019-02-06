@@ -42,6 +42,9 @@ public class DatabaseFiller implements ApplicationRunner {
     @Autowired
     IRelationshipService iRelationshipService;
 
+    @Autowired
+    IMessageService iMessageService;
+
     @Value("${spring.datasource.password}")
     private String springDatasourcePassword;
 
@@ -215,6 +218,28 @@ public class DatabaseFiller implements ApplicationRunner {
         iRelationshipService.updateRelationship(relationshipModel1);
 
         iUserService.addContacts(testAdminModel, testUser1Model);
+
+        MessageModel messageModel1 = new MessageModel();
+        messageModel1.setSendDate(new Timestamp(System.currentTimeMillis()));
+        messageModel1.setText("Pierwsza wiadomosc!");
+        messageModel1.setSender(testUser1Model);
+        messageModel1.setRecipient(testUser2Model);
+
+        MessageModel messageModel2 = new MessageModel();
+        messageModel2.setSendDate(new Timestamp(System.currentTimeMillis()));
+        messageModel2.setText("Druga wiadomosc!");
+        messageModel2.setSender(testUser1Model);
+        messageModel2.setRecipient(testUser2Model);
+
+        MessageModel messageModel3 = new MessageModel();
+        messageModel3.setSendDate(new Timestamp(System.currentTimeMillis()));
+        messageModel3.setText("Pierwsza wiadomosc do administratora!");
+        messageModel3.setSender(testUser1Model);
+        messageModel3.setRecipient(testAdminModel);
+
+        iMessageService.sendMessage(messageModel1);
+        iMessageService.sendMessage(messageModel2);
+        iMessageService.sendMessage(messageModel3);
     }
 
     @Override

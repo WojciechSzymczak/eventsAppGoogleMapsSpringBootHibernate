@@ -55,6 +55,14 @@ public class UserModel implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "betaUserModel")
     private Set<RelationshipModel> betaRelationshipModels;
 
+    //sendedMessages - the messages send by user to other users.
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "sender")
+    private Set<MessageModel> sendedMessages;
+
+    //receivedMessages - the messages received by user from other users.
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "recipient")
+    private Set<MessageModel> receivedMessages;
+
     public Long getId() { return id; }
 
     public void setId(Long id) {
@@ -144,5 +152,21 @@ public class UserModel implements Serializable {
             }
         }
         return false;
+    }
+
+    public Set<MessageModel> getSendedMessages() {
+        return sendedMessages;
+    }
+
+    public void setSendedMessages(Set<MessageModel> sendedMessages) {
+        this.sendedMessages = sendedMessages;
+    }
+
+    public Set<MessageModel> getReceivedMessages() {
+        return receivedMessages;
+    }
+
+    public void setReceivedMessages(Set<MessageModel> receivedMessages) {
+        this.receivedMessages = receivedMessages;
     }
 }
