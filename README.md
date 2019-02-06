@@ -9,7 +9,18 @@ A small, web application allowing users to organize events with Google Maps.
 
 ## Installation:
 
-1) Download and install MySQL database.
+1) Download and install MySQL database. Execute below queries as root:
+
+```
+CREATE DATABASE IF NOT EXISTS events_database;
+
+USE events_database;
+
+CREATE USER IF NOT EXISTS 'webappspringuser'@'localhost' IDENTIFIED BY 'f7=en5^7-uCG?yHt';
+
+GRANT ALL ON events_database.* TO 'webappspringuser'@'localhost';
+```
+Remeber, theses are only example credentials and you should change them for safety.
 
 2) Download and install InteliJ Idea.
 
