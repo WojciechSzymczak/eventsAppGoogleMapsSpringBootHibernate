@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
 
-@Entity // This tells Hibernate to make a table out of this class
+@Entity
 @Table(name = "users")
 public class UserModel implements Serializable {
 

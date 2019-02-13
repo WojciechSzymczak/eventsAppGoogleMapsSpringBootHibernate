@@ -34,7 +34,6 @@
                 </div>
             </div>
                 <form action="/userDetailsManager" method="post">
-                    <c:if test="${userModel.getUserDetailsModel().getFirstname() != null || userModel.getUserDetailsModel().getFirstname().trim().equals('')}">
                         <div class="form-group row">
                             <label for="firstName" class="col-sm-2 col-form-label">First name:</label>
                             <div class="col-sm-10">
@@ -43,8 +42,6 @@
                                 </div>
                             </div>
                         </div>
-                    </c:if>
-                    <c:if test="${userModel.getUserDetailsModel().getLastname() != null || userModel.getUserDetailsModel().getLastname().trim().equals('')}">
                         <div class="form-group row">
                             <label for="lastName" class="col-sm-2 col-form-label">Last name:</label>
                             <div class="col-sm-10">
@@ -53,8 +50,6 @@
                                 </div>
                             </div>
                         </div>
-                    </c:if>
-                    <c:if test="${userModel.getUserDetailsModel().getBirthdate() != null}">
                     <div class="form-group row">
                         <label for="birthDate" class="col-sm-2 col-form-label">Birth date:</label>
                         <div class="col-sm-10">
@@ -66,15 +61,12 @@
                             </div>
                         </div>
                     </div>
-                    </c:if>
-                    <c:if test="${userModel.getUserDetailsModel().getJoindate() != null}">
                     <div class="form-group row">
                         <label for="staticJoinDate" class="col-sm-2 col-form-label">Join date:</label>
                         <div class="col-sm-10">
                             <input type="text" readonly="" class="form-control-plaintext" id="staticJoinDate" value="${userModel.getUserDetailsModel().getJoindate().toLocalDateTime()}">
                         </div>
                     </div>
-                    </c:if>
                     <div class="row">
                         <div class="col-md-12 d-flex justify-content-end">
                             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

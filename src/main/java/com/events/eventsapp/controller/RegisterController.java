@@ -3,7 +3,6 @@ package com.events.eventsapp.controller;
 
 import com.events.eventsapp.model.UserModel;
 import com.events.eventsapp.service.interfaces.IUserService;
-import com.events.eventsapp.service.implementations.UserServiceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class RegisterController {
 
     @Autowired
-    IUserService iUserService = new UserServiceImpl();
+    IUserService iUserService;
 
     @RequestMapping(path = "/register", method = RequestMethod.GET)
     public @ResponseBody ModelAndView register() {
@@ -24,7 +23,8 @@ public class RegisterController {
     }
 
     @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public @ResponseBody ModelAndView register(@RequestParam(name = "email", required = false) String email,
+    public @ResponseBody ModelAndView register(
+                         @RequestParam(name = "email", required = false) String email,
                          @RequestParam(name = "username", required = false) String username,
                          @RequestParam(name = "password", required = false) String password,
                          @RequestParam(name = "passwordRepeated", required = false) String passwordRepeated) {

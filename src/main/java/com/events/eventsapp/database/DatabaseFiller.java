@@ -179,7 +179,7 @@ public class DatabaseFiller implements ApplicationRunner {
         eventModel5.addEventCategoryModel(eventCategoryModel1);
 
         eventModel6.setName("Bogusz's vehicle purchase.");
-        eventModel6.setDescription("Bogusz will buy a tank for Polish roads.");
+        eventModel6.setDescription("Bogusz will buy Renault Megane.");
         eventModel6.setBeginningDate(DateAndTimeUtil.getTimestamp("2019-11-11", "10:00 PM"));
         eventModel6.setLatitude(51.79971127975278);
         eventModel6.setLongitude(19.46422394609382);

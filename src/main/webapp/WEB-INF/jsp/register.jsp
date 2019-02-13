@@ -6,13 +6,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="images/favicon.png">
-
     <title>Events - register page</title>
-
-    <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
     <link href="css/customcss/style1.css" rel="stylesheet">
 </head>
 
@@ -20,7 +15,6 @@
 
     <%@include file="../jspf/userPanel.jspf"%>
     <%@include file="../jspf/navigationBar.jspf"%>
-
 
     <div class="container">
 
@@ -45,15 +39,8 @@
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-user"></i></div>
                             <input type="text" name="username" class="form-control" id="username"
-                                   placeholder="John Doe" required autofocus>
+                                   placeholder="Your username" required autofocus>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <!-- Put name validation error messages here -->
-                        </span>
                     </div>
                 </div>
             </div>
@@ -66,15 +53,8 @@
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-at"></i></div>
                             <input type="text" name="email" class="form-control" id="email"
-                                   placeholder="you@example.com" required autofocus>
+                                   placeholder="user@email.com" required autofocus>
                         </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <!-- Put e-mail validation error messages here -->
-                        </span>
                     </div>
                 </div>
             </div>
@@ -87,17 +67,19 @@
                         <div class="input-group mb-2 mr-sm-2 mb-sm-0">
                             <div class="input-group-addon" style="width: 2.6rem"><i class="fa fa-key"></i></div>
                             <input type="password" name="password" class="form-control" id="password"
-                                   placeholder="Password" required>
+                                   placeholder="password" required>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="form-control-feedback">
-                        <span class="text-danger align-middle">
-                            <i class="fa fa-close"> Example Error Message</i>
-                        </span>
+                <c:if test='${requestScope.get("message") != null}'>
+                    <div class="col-md-3">
+                        <div class="form-control-feedback">
+                            <span class="text-danger align-middle">
+                                <i class="fa fa-close">${requestScope.get("message")}</i>
+                            </span>
+                        </div>
                     </div>
-                </div>
+                </c:if>
             </div>
             <div class="row">
                 <div class="col-md-3 field-label-responsive">
@@ -110,7 +92,7 @@
                                 <i class="fa fa-repeat"></i>
                             </div>
                             <input type="password" name="passwordRepeated" class="form-control"
-                                   id="passwordRepeated" placeholder="Password" required>
+                                   id="passwordRepeated" placeholder="password" required>
                         </div>
                     </div>
                 </div>
@@ -136,6 +118,5 @@
     <script>window.jQuery || document.write('<script src="jquery/jquery-3.3.1.js"><\/script>')</script>
     <script src="popper/popper.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
-
 </body>
 </html>
